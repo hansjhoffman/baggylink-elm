@@ -1,0 +1,15 @@
+# deps
+elm-stuff/
+node_modules/
+
+# artifacts
+dist
+
+# editors
+.idea
+.nova
+
+# misc
+.DS_Store
+.env*
+.nix-*
