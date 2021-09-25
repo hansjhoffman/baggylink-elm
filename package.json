@@ -8,9 +8,11 @@
     "deploy": "netlify deploy --prod",
     "prepare": "husky install",
     "preview": "make preview",
+    "schema": "make schema",
     "start": "make run"
   },
   "devDependencies": {
+    "@dillonkearns/elm-graphql": "^4.2.2",
     "@tailwindcss/typography": "^0.4.1",
     "autoprefixer": "^10.3.5",
     "husky": "^7.0.2",

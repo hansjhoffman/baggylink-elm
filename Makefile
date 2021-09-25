@@ -46,6 +46,17 @@ build: ## Make a production build
 deps: ## Install all dependencies
 	yarn install
 
+.PHONY: preview
+preview: build ## See what the production build will look like
+	yarn vite preview --https
+
+.PHONY: run
+run: ## Run web app
+	yarn vite --https
+
+# Check, lint and format targets
+# ------------------------------
+
 .PHONY: format
 format: format-elm ## Format everything
 
@@ -60,10 +71,6 @@ lint: lint-elm ## Format everything
 lint-elm: ## Lint elm files
 	elm-review
 
-.PHONY: preview
-preview: build ## See what the production build will look like
-	yarn vite preview --https
-
-.PHONY: run
-run: ## Run web app
-	yarn vite --https
+.PHONY: schema
+schema: ## Fetch latest GraphQL schema
+	yarn elm-graphql http://localhost:4000/graphql --base Bagheera

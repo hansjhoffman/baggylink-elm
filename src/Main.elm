@@ -6,6 +6,11 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
 
+endpoint : String
+endpoint =
+    "http://localhost:/4000/graphql"
+
+
 
 -- MODEL
 
