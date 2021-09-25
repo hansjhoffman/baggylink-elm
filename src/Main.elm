@@ -49,9 +49,9 @@ view : Model -> Browser.Document Msg
 view _ =
     { title = "Baggylinks"
     , body =
-        [ div [ class "app" ]
-            [ div []
-                [ h1 [] [ text "Hello World" ]
+        [ div []
+            [ div [ class "tw-flex tw-justify-end" ]
+                [ h1 [ class "tw-prose-2xl" ] [ text "Hello World" ]
                 ]
             ]
         ]

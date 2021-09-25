@@ -11,8 +11,12 @@
     "start": "make run"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.4.1",
+    "autoprefixer": "^10.3.5",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
+    "postcss": "^8.3.7",
+    "tailwindcss": "^2.2.15",
     "vite": "^2.5.10",
     "vite-plugin-elm": "^2.5.0"
   },
