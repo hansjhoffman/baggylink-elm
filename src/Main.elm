@@ -19,7 +19,7 @@ type alias Model =
     Int
 
 
-init : () -> ( Model, Cmd Msg )
+init : Flags -> ( Model, Cmd Msg )
 init _ =
     ( 1, Cmd.none )
 
@@ -67,7 +67,11 @@ view _ =
 -- MAIN
 
 
-main : Program () Model Msg
+type alias Flags =
+    ()
+
+
+main : Program Flags Model Msg
 main =
     Browser.document
         { init = init
