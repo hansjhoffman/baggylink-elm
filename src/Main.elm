@@ -72,12 +72,7 @@ viewFilterInput =
             ]
         , input
             [ attribute "aria-label" "Filter Links"
-            , class "tw-w-full"
-            , class "tw-text-sm tw-text-black"
-            , class "tw-placeholder-gray-500"
-            , class "tw-border tw-border-gray-200 tw-rounded-md"
-            , class "focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500"
-            , class "tw-py-2 tw-px-10"
+            , class "tw-w-full tw-text-sm tw-text-black tw-placeholder-gray-500 tw-border tw-border-gray-200 tw-rounded-md focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500 tw-py-2 tw-px-10"
             , onInput (\_ -> NoOp)
             , placeholder "Filter Links"
             , type_ "text"
@@ -99,12 +94,7 @@ view _ =
             [ header [ class "tw-flex tw-items-center tw-justify-between tw-mb-6" ]
                 [ h2 [ class "tw-prose-xl" ] [ text "Links" ]
                 , button
-                    [ class "tw-group tw-flex tw-items-center"
-                    , class "tw-bg-blue-300 hover:tw-bg-blue-400"
-                    , class "tw-rounded-md"
-                    , class "tw-text-blue-600 hover:tw-text-blue-800"
-                    , class "tw-text-sm tw-font-medium"
-                    , class "tw-px-4 tw-py-2"
+                    [ class "tw-group tw-flex tw-items-center tw-bg-blue-300 hover:tw-bg-blue-400 tw-rounded-md tw-text-blue-600 hover:tw-text-blue-800 tw-text-sm tw-font-medium tw-px-4 tw-py-2"
                     , onClick NoOp
                     ]
                     [ svg
