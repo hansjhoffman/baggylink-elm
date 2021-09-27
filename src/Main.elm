@@ -1,9 +1,18 @@
 module Main exposing (..)
 
+import Bagheera.Object
+import Bagheera.Object.LinkConnection
+import Bagheera.Object.PageInfo
+import Bagheera.Query as Query
 import Browser
+import Graphql.Http
+import Graphql.Operation exposing (RootQuery)
+import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import Html exposing (..)
 import Html.Attributes exposing (attribute, class, placeholder, type_)
 import Html.Events exposing (onClick, onInput)
+import RemoteData exposing (RemoteData)
 import Svg exposing (path, svg)
 import Svg.Attributes as Svg
 
@@ -13,17 +22,87 @@ endpoint =
     "http://localhost:/4000/graphql"
 
 
+type alias Paginated dataType =
+    { data : dataType
+    , pageInfo : PageInfo
+    }
+
+
+type alias PageInfo =
+    { endCursor : Maybe String
+    , hasNextPage : Bool
+    , hasPreviousPage : Bool
+    , startCursor : Maybe String
+    }
+
+
+type alias ApiResponse a =
+    RemoteData (Graphql.Http.Error a) a
+
+
+queryAllLinks : Maybe String -> SelectionSet (ApiResponse Bagheera.Object.LinkConnection) RootQuery
+queryAllLinks cursor =
+    Query.links
+        (\optionals ->
+            { optionals
+                | first = Present 10
+                , after = OptionalArgument.fromMaybe cursor
+            }
+        )
+        linksSelection
+
+
+linksSelection : SelectionSet BaggyLink Bagheera.Object.LinkConnection
+linksSelection =
+    SelectionSet.succeed Paginated
+        |> with linksEdgesSelection
+        |> with (Bagheera.Object.LinkConnection.pageInfo linksPageInfoSelection)
+
+
+linksEdgesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
+linksEdgesSelection =
+    Debug.todo
+
+
+linksNodesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
+linksNodesSelection =
+    Debug.todo
+
+
+linksPageInfoSelection : SelectionSet PageInfo Bagheera.Object.PageInfo
+linksPageInfoSelection =
+    SelectionSet.succeed PageInfo
+        |> with Bagheera.Object.PageInfo.endCursor
+        |> with Bagheera.Object.PageInfo.hasNextPage
+        |> with Bagheera.Object.PageInfo.hasPreviousPage
+        |> with Bagheera.Object.PageInfo.startCursor
+
+
+makeRequest : Cmd Msg
+makeRequest =
+    queryAllLinks Nothing
+        |> Graphql.Http.queryRequest endpoint
+        |> Graphql.Http.send (RemoteData.fromResult >> LinksResponse)
+
+
 
 -- MODEL
 
 
 type alias Model =
-    Int
+    { links : ApiResponse (List BaggyLink) }
+
+
+type alias BaggyLink =
+    { hash : String
+    , id : String
+    , url : String
+    }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( 1, Cmd.none )
+    ( { links = RemoteData.Loading }, makeRequest )
 
 
 
@@ -41,11 +120,19 @@ subscriptions _ =
 
 type Msg
     = NoOp
+    | LinksResponse (ApiResponse (List BaggyLink))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model, Cmd.none )
+update msg model =
+    case msg of
+        LinksResponse response ->
+            ( { model | links = response }
+            , Cmd.none
+            )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 
@@ -81,13 +168,29 @@ viewFilterInput =
         ]
 
 
-viewLinkCard : Html msg
-viewLinkCard =
-    li [] []
+viewLinkCard : BaggyLink -> Html msg
+viewLinkCard link =
+    li [] [ text link.url ]
+
+
+viewLinks : Model -> Html msg
+viewLinks model =
+    case model.links of
+        RemoteData.NotAsked ->
+            div [] [ text "not asked" ]
+
+        RemoteData.Loading ->
+            div [] [ text "loading" ]
+
+        RemoteData.Success links ->
+            ul [] (List.map viewLinkCard links)
+
+        RemoteData.Failure _ ->
+            div [] [ text "failure :(" ]
 
 
 view : Model -> Browser.Document Msg
-view _ =
+view model =
     { title = "Baggylinks"
     , body =
         [ section [ class "tw-w-1/2 tw-mx-auto" ]
@@ -116,7 +219,7 @@ view _ =
                     ]
                 ]
             , viewFilterInput
-            , ul [] []
+            , viewLinks model
             ]
         ]
     }
