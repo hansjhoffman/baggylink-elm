@@ -4,29 +4,22 @@
 
 module Bagheera.Object.Link exposing (..)
 
-import Bagheera.InputObject
-import Bagheera.Interface
 import Bagheera.Object
 import Bagheera.Scalar
 import Bagheera.ScalarCodecs
-import Bagheera.Union
-import Graphql.Internal.Builder.Argument as Argument exposing (Argument)
 import Graphql.Internal.Builder.Object as Object
-import Graphql.Internal.Encode as Encode exposing (Value)
-import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
-import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
 
 {-| Auto-generated hash for the shortened URL
 -}
-hash : SelectionSet (Maybe String) Bagheera.Object.Link
+hash : SelectionSet String Bagheera.Object.Link
 hash =
-    Object.selectionForField "(Maybe String)" "hash" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "hash" [] Decode.string
 
 
-{-| All instances that a link has been viewed
+{-| Number of times a link has been viewed
 -}
 hits : SelectionSet (Maybe Int) Bagheera.Object.Link
 hits =
@@ -42,6 +35,6 @@ id =
 
 {-| Destination URL
 -}
-url : SelectionSet (Maybe String) Bagheera.Object.Link
+url : SelectionSet String Bagheera.Object.Link
 url =
-    Object.selectionForField "(Maybe String)" "url" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "url" [] Decode.string

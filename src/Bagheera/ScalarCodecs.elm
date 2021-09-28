@@ -5,7 +5,6 @@
 module Bagheera.ScalarCodecs exposing (..)
 
 import Bagheera.Scalar exposing (defaultCodecs)
-import Json.Decode as Decode exposing (Decoder)
 
 
 type alias Id =
