@@ -30,18 +30,22 @@ type alias Paginated dataType =
 
 
 type alias PageInfo =
-    { endCursor : Maybe String
+    { endCursor : Cursor
     , hasNextPage : Bool
     , hasPreviousPage : Bool
-    , startCursor : Maybe String
+    , startCursor : Cursor
     }
+
+
+type alias Cursor =
+    Maybe String
 
 
 type alias ApiResponse a =
     RemoteData (Graphql.Http.Error a) a
 
 
-queryAllLinks : Maybe String -> SelectionSet (ApiResponse Bagheera.Object.LinkConnection) RootQuery
+queryAllLinks : Cursor -> SelectionSet (ApiResponse Bagheera.Object.LinkConnection) RootQuery
 queryAllLinks cursor =
     Query.links
         (\optionals ->
