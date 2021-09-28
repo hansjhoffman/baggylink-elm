@@ -20,7 +20,7 @@ import Svg.Attributes as Svg
 
 endpoint : String
 endpoint =
-    "http://localhost:/4000/graphql"
+    "http://localhost:4000/graphql"
 
 
 type alias Paginated dataType =
