@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Bagheera.Object
 import Bagheera.Object.LinkConnection
+import Bagheera.Object.LinkEdge
 import Bagheera.Object.PageInfo
 import Bagheera.Query as Query
 import Browser
@@ -61,12 +62,16 @@ linksSelection =
 
 linksEdgesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
 linksEdgesSelection =
-    Debug.todo
+    SelectionSet.succeed Bagheera.Object.LinkConnection.edges
+        |> with linksNodesSelection
 
 
 linksNodesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
 linksNodesSelection =
-    Debug.todo
+    SelectionSet.succeed Bagheera.Object.LinkEdge.node
+        |> with BaggyLink.hash
+        |> with BaggyLink.id
+        |> with BaggyLink.url
 
 
 linksPageInfoSelection : SelectionSet PageInfo Bagheera.Object.PageInfo
