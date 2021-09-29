@@ -1,10 +1,12 @@
 module Main exposing (..)
 
 import Bagheera.Object
+import Bagheera.Object.Link
 import Bagheera.Object.LinkConnection
 import Bagheera.Object.LinkEdge
 import Bagheera.Object.PageInfo
 import Bagheera.Query as Query
+import Bagheera.ScalarCodecs exposing (Id)
 import Browser
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
@@ -45,7 +47,10 @@ type alias ApiResponse a =
     RemoteData (Graphql.Http.Error a) a
 
 
-queryAllLinks : Cursor -> SelectionSet (ApiResponse Bagheera.Object.LinkConnection) RootQuery
+
+-- queryAllLinks : Cursor -> SelectionSet (Paginated (List BaggyLink)) RootQuery
+
+
 queryAllLinks cursor =
     Query.links
         (\optionals ->
@@ -57,25 +62,30 @@ queryAllLinks cursor =
         linksSelection
 
 
-linksSelection : SelectionSet BaggyLink Bagheera.Object.LinkConnection
+
+-- linksSelection : SelectionSet (Paginated (List BaggyLink)) Bagheera.Object.LinkConnection
+
+
 linksSelection =
     SelectionSet.succeed Paginated
         |> with linksEdgesSelection
         |> with (Bagheera.Object.LinkConnection.pageInfo linksPageInfoSelection)
 
 
-linksEdgesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
+
+-- linksEdgesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
+
+
 linksEdgesSelection =
-    SelectionSet.succeed Bagheera.Object.LinkConnection.edges
-        |> with linksNodesSelection
+    Bagheera.Object.LinkConnection.edges (Bagheera.Object.LinkEdge.node linksNodeSelection)
 
 
-linksNodesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
-linksNodesSelection =
-    SelectionSet.succeed Bagheera.Object.LinkEdge.node
-        |> with BaggyLink.hash
-        |> with BaggyLink.id
-        |> with BaggyLink.url
+linksNodeSelection : SelectionSet BaggyLink Bagheera.Object.Link
+linksNodeSelection =
+    SelectionSet.map3 BaggyLink
+        Bagheera.Object.Link.hash
+        Bagheera.Object.Link.id
+        Bagheera.Object.Link.url
 
 
 linksPageInfoSelection : SelectionSet PageInfo Bagheera.Object.PageInfo
@@ -99,12 +109,12 @@ makeRequest =
 
 
 type alias Model =
-    { links : ApiResponse (List BaggyLink) }
+    { links : ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe BaggyLink)))))) }
 
 
 type alias BaggyLink =
     { hash : String
-    , id : String
+    , id : Id
     , url : String
     }
 
@@ -129,7 +139,7 @@ subscriptions _ =
 
 type Msg
     = NoOp
-    | LinksResponse (ApiResponse (List BaggyLink))
+    | LinksResponse (ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe BaggyLink)))))))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -185,7 +195,7 @@ viewFilterInput =
 
 viewLinkCard : BaggyLink -> Html msg
 viewLinkCard link =
-    li [] [ text link.url ]
+    li [] [ text link.hash ]
 
 
 viewLinks : Model -> Html msg
@@ -198,7 +208,7 @@ viewLinks model =
             div [] [ text "loading" ]
 
         RemoteData.Success links ->
-            ul [] (List.map viewLinkCard links)
+            ul [] [ text "yay!" ]
 
         RemoteData.Failure _ ->
             div [] [ text "failure :(" ]
