@@ -8,6 +8,7 @@ import Bagheera.Object.PageInfo
 import Bagheera.Query as Query
 import Bagheera.ScalarCodecs exposing (LinkId)
 import Browser
+import Gql exposing (..)
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
@@ -18,33 +19,6 @@ import Html.Events exposing (onClick, onInput)
 import RemoteData exposing (RemoteData)
 import Svg exposing (path, svg)
 import Svg.Attributes as Svg
-
-
-endpoint : String
-endpoint =
-    "http://localhost:4000/graphql"
-
-
-type alias Paginated a =
-    { data : a
-    , pageInfo : PageInfo
-    }
-
-
-type alias PageInfo =
-    { endCursor : Cursor
-    , hasNextPage : Bool
-    , hasPreviousPage : Bool
-    , startCursor : Cursor
-    }
-
-
-type alias Cursor =
-    Maybe String
-
-
-type alias GqlResponse a =
-    RemoteData (Graphql.Http.Error a) a
 
 
 
