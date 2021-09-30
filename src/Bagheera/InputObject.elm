@@ -49,7 +49,7 @@ buildUpdateLinkInput required____ fillOptionals____ =
 
 
 type alias UpdateLinkInputRequiredFields =
-    { id : Bagheera.ScalarCodecs.Id }
+    { id : Bagheera.ScalarCodecs.LinkId }
 
 
 type alias UpdateLinkInputOptionalFields =
@@ -59,7 +59,7 @@ type alias UpdateLinkInputOptionalFields =
 {-| Type for the UpdateLinkInput input object.
 -}
 type alias UpdateLinkInput =
-    { id : Bagheera.ScalarCodecs.Id
+    { id : Bagheera.ScalarCodecs.LinkId
     , url : OptionalArgument String
     }
 
@@ -69,4 +69,4 @@ type alias UpdateLinkInput =
 encodeUpdateLinkInput : UpdateLinkInput -> Value
 encodeUpdateLinkInput input____ =
     Encode.maybeObject
-        [ ( "id", (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) input____.id |> Just ), ( "url", Encode.string |> Encode.optional input____.url ) ]
+        [ ( "id", (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) input____.id |> Just ), ( "url", Encode.string |> Encode.optional input____.url ) ]

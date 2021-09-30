@@ -30,7 +30,7 @@ createLink requiredArgs____ object____ =
 
 
 type alias DeleteLinkRequiredArguments =
-    { id : Bagheera.ScalarCodecs.Id }
+    { id : Bagheera.ScalarCodecs.LinkId }
 
 
 {-| Delete a link
@@ -40,7 +40,7 @@ deleteLink :
     -> SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) RootMutation
 deleteLink requiredArgs____ object____ =
-    Object.selectionForCompositeField "deleteLink" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "deleteLink" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
 
 
 type alias UpdateLinkRequiredArguments =

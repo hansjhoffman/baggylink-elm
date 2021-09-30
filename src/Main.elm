@@ -6,7 +6,7 @@ import Bagheera.Object.LinkConnection
 import Bagheera.Object.LinkEdge
 import Bagheera.Object.PageInfo
 import Bagheera.Query as Query
-import Bagheera.ScalarCodecs exposing (Id)
+import Bagheera.ScalarCodecs exposing (LinkId)
 import Browser
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
@@ -114,7 +114,7 @@ type alias Model =
 
 type alias BaggyLink =
     { hash : String
-    , id : Id
+    , id : LinkId
     , url : String
     }
 

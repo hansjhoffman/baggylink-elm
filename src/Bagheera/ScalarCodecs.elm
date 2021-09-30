@@ -11,8 +11,13 @@ type alias Id =
     Bagheera.Scalar.Id
 
 
-codecs : Bagheera.Scalar.Codecs Id
+type alias LinkId =
+    Bagheera.Scalar.LinkId
+
+
+codecs : Bagheera.Scalar.Codecs Id LinkId
 codecs =
     Bagheera.Scalar.defineCodecs
         { codecId = defaultCodecs.codecId
+        , codecLinkId = defaultCodecs.codecLinkId
         }

@@ -2,7 +2,7 @@
 -- https://github.com/dillonkearns/elm-graphql
 
 
-module Bagheera.Scalar exposing (Codecs, Id(..), defaultCodecs, defineCodecs, unwrapCodecs, unwrapEncoder)
+module Bagheera.Scalar exposing (Codecs, Id(..), LinkId(..), defaultCodecs, defineCodecs, unwrapCodecs, unwrapEncoder)
 
 import Graphql.Codec exposing (Codec)
 import Graphql.Internal.Builder.Object as Object
@@ -15,41 +15,56 @@ type Id
     = Id String
 
 
+type LinkId
+    = LinkId String
+
+
 defineCodecs :
-    { codecId : Codec valueId }
-    -> Codecs valueId
+    { codecId : Codec valueId
+    , codecLinkId : Codec valueLinkId
+    }
+    -> Codecs valueId valueLinkId
 defineCodecs definitions =
     Codecs definitions
 
 
 unwrapCodecs :
-    Codecs valueId
-    -> { codecId : Codec valueId }
+    Codecs valueId valueLinkId
+    ->
+        { codecId : Codec valueId
+        , codecLinkId : Codec valueLinkId
+        }
 unwrapCodecs (Codecs unwrappedCodecs) =
     unwrappedCodecs
 
 
 unwrapEncoder :
-    (RawCodecs valueId -> Codec getterValue)
-    -> Codecs valueId
+    (RawCodecs valueId valueLinkId -> Codec getterValue)
+    -> Codecs valueId valueLinkId
     -> getterValue
     -> Graphql.Internal.Encode.Value
 unwrapEncoder getter (Codecs unwrappedCodecs) =
     (unwrappedCodecs |> getter |> .encoder) >> Graphql.Internal.Encode.fromJson
 
 
-type Codecs valueId
-    = Codecs (RawCodecs valueId)
+type Codecs valueId valueLinkId
+    = Codecs (RawCodecs valueId valueLinkId)
 
 
-type alias RawCodecs valueId =
-    { codecId : Codec valueId }
+type alias RawCodecs valueId valueLinkId =
+    { codecId : Codec valueId
+    , codecLinkId : Codec valueLinkId
+    }
 
 
-defaultCodecs : RawCodecs Id
+defaultCodecs : RawCodecs Id LinkId
 defaultCodecs =
     { codecId =
         { encoder = \(Id raw) -> Encode.string raw
         , decoder = Object.scalarDecoder |> Decode.map Id
+        }
+    , codecLinkId =
+        { encoder = \(LinkId raw) -> Encode.string raw
+        , decoder = Object.scalarDecoder |> Decode.map LinkId
         }
     }

@@ -24,8 +24,7 @@
   },
   "lint-staged": {
     "**/*.elm": [
-      "elm-format --yes",
-      "elm-review --fix-all"
+      "elm-format --yes"
     ]
   }
 }

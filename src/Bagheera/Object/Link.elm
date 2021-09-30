@@ -19,18 +19,11 @@ hash =
     Object.selectionForField "String" "hash" [] Decode.string
 
 
-{-| Number of times a link has been viewed
+{-| The opaque ID of the link object
 -}
-hits : SelectionSet (Maybe Int) Bagheera.Object.Link
-hits =
-    Object.selectionForField "(Maybe Int)" "hits" [] (Decode.int |> Decode.nullable)
-
-
-{-| The ID of an object
--}
-id : SelectionSet Bagheera.ScalarCodecs.Id Bagheera.Object.Link
+id : SelectionSet Bagheera.ScalarCodecs.LinkId Bagheera.Object.Link
 id =
-    Object.selectionForField "ScalarCodecs.Id" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecId |> .decoder)
+    Object.selectionForField "ScalarCodecs.LinkId" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecLinkId |> .decoder)
 
 
 {-| Destination URL
@@ -38,3 +31,10 @@ id =
 url : SelectionSet String Bagheera.Object.Link
 url =
     Object.selectionForField "String" "url" [] Decode.string
+
+
+{-| Number of times a link has been viewed
+-}
+visits : SelectionSet (Maybe Int) Bagheera.Object.Link
+visits =
+    Object.selectionForField "(Maybe Int)" "visits" [] (Decode.int |> Decode.nullable)

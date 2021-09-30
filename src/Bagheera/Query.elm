@@ -17,7 +17,7 @@ import Json.Decode as Decode
 
 
 type alias LinkRequiredArguments =
-    { id : Bagheera.ScalarCodecs.Id }
+    { id : Bagheera.ScalarCodecs.LinkId }
 
 
 {-| Get details about a link
@@ -27,7 +27,7 @@ link :
     -> SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) RootQuery
 link requiredArgs____ object____ =
-    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
 
 
 type alias LinksOptionalArguments =
