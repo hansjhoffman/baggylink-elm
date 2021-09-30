@@ -11,11 +11,11 @@ endpoint =
 
 type alias Paginated a =
     { data : a
-    , pageInfo : PageInfo
+    , pageInfo : CurrentPageInfo
     }
 
 
-type alias PageInfo =
+type alias CurrentPageInfo =
     { endCursor : Cursor
     , hasNextPage : Bool
     , hasPreviousPage : Bool

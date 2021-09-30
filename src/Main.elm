@@ -1,10 +1,10 @@
 module Main exposing (..)
 
-import Bagheera.Object exposing (Link)
+import Bagheera.Object exposing (Link, PageInfo)
 import Bagheera.Object.Link as Link
 import Bagheera.Object.LinkConnection as LinkConnection
 import Bagheera.Object.LinkEdge as LinkEdge
-import Bagheera.Object.PageInfo
+import Bagheera.Object.PageInfo as PageInfo
 import Bagheera.Query as Query
 import Bagheera.ScalarCodecs exposing (LinkId)
 import Browser
@@ -62,13 +62,13 @@ linksNodeSelection =
         Link.url
 
 
-linksPageInfoSelection : SelectionSet PageInfo Bagheera.Object.PageInfo
+linksPageInfoSelection : SelectionSet CurrentPageInfo PageInfo
 linksPageInfoSelection =
-    SelectionSet.succeed PageInfo
-        |> with Bagheera.Object.PageInfo.endCursor
-        |> with Bagheera.Object.PageInfo.hasNextPage
-        |> with Bagheera.Object.PageInfo.hasPreviousPage
-        |> with Bagheera.Object.PageInfo.startCursor
+    SelectionSet.succeed CurrentPageInfo
+        |> with PageInfo.endCursor
+        |> with PageInfo.hasNextPage
+        |> with PageInfo.hasPreviousPage
+        |> with PageInfo.startCursor
 
 
 makeRequest : Cmd Msg
