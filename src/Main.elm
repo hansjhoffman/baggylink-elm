@@ -1,9 +1,9 @@
 module Main exposing (..)
 
-import Bagheera.Object
-import Bagheera.Object.Link
-import Bagheera.Object.LinkConnection
-import Bagheera.Object.LinkEdge
+import Bagheera.Object exposing (Link)
+import Bagheera.Object.Link as Link
+import Bagheera.Object.LinkConnection as LinkConnection
+import Bagheera.Object.LinkEdge as LinkEdge
 import Bagheera.Object.PageInfo
 import Bagheera.Query as Query
 import Bagheera.ScalarCodecs exposing (LinkId)
@@ -25,8 +25,8 @@ endpoint =
     "http://localhost:4000/graphql"
 
 
-type alias Paginated dataType =
-    { data : dataType
+type alias Paginated a =
+    { data : a
     , pageInfo : PageInfo
     }
 
@@ -48,7 +48,7 @@ type alias ApiResponse a =
 
 
 
--- queryAllLinks : Cursor -> SelectionSet (Paginated (List BaggyLink)) RootQuery
+-- queryAllLinks : Cursor -> SelectionSet (Paginated (List LinkData)) RootQuery
 
 
 queryAllLinks cursor =
@@ -63,29 +63,29 @@ queryAllLinks cursor =
 
 
 
--- linksSelection : SelectionSet (Paginated (List BaggyLink)) Bagheera.Object.LinkConnection
+-- linksSelection : SelectionSet (Paginated (List LinkData)) LinkConnection
 
 
 linksSelection =
     SelectionSet.succeed Paginated
         |> with linksEdgesSelection
-        |> with (Bagheera.Object.LinkConnection.pageInfo linksPageInfoSelection)
+        |> with (LinkConnection.pageInfo linksPageInfoSelection)
 
 
 
--- linksEdgesSelection : SelectionSet (List BaggyLink) Bagheera.Object.LinkConnection
+-- linksEdgesSelection : SelectionSet (List LinkData) LinkConnection
 
 
 linksEdgesSelection =
-    Bagheera.Object.LinkConnection.edges (Bagheera.Object.LinkEdge.node linksNodeSelection)
+    LinkConnection.edges (LinkEdge.node linksNodeSelection)
 
 
-linksNodeSelection : SelectionSet BaggyLink Bagheera.Object.Link
+linksNodeSelection : SelectionSet LinkData Link
 linksNodeSelection =
-    SelectionSet.map3 BaggyLink
-        Bagheera.Object.Link.hash
-        Bagheera.Object.Link.id
-        Bagheera.Object.Link.url
+    SelectionSet.map3 LinkData
+        Link.hash
+        Link.id
+        Link.url
 
 
 linksPageInfoSelection : SelectionSet PageInfo Bagheera.Object.PageInfo
@@ -109,10 +109,10 @@ makeRequest =
 
 
 type alias Model =
-    { links : ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe BaggyLink)))))) }
+    { links : ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) }
 
 
-type alias BaggyLink =
+type alias LinkData =
     { hash : String
     , id : LinkId
     , url : String
@@ -139,7 +139,7 @@ subscriptions _ =
 
 type Msg
     = NoOp
-    | LinksResponse (ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe BaggyLink)))))))
+    | LinksResponse (ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -193,7 +193,7 @@ viewFilterInput =
         ]
 
 
-viewLinkCard : BaggyLink -> Html msg
+viewLinkCard : LinkData -> Html msg
 viewLinkCard link =
     li [] [ text link.hash ]
 
