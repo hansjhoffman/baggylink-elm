@@ -43,7 +43,7 @@ type alias Cursor =
     Maybe String
 
 
-type alias ApiResponse a =
+type alias GqlResponse a =
     RemoteData (Graphql.Http.Error a) a
 
 
@@ -101,7 +101,7 @@ makeRequest : Cmd Msg
 makeRequest =
     queryAllLinks Nothing
         |> Graphql.Http.queryRequest endpoint
-        |> Graphql.Http.send (RemoteData.fromResult >> LinksResponse)
+        |> Graphql.Http.send (RemoteData.fromResult >> GotLinksResponse)
 
 
 
@@ -109,7 +109,7 @@ makeRequest =
 
 
 type alias Model =
-    { links : ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) }
+    { links : GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) }
 
 
 type alias LinkData =
@@ -139,13 +139,13 @@ subscriptions _ =
 
 type Msg
     = NoOp
-    | LinksResponse (ApiResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
+    | GotLinksResponse (GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        LinksResponse response ->
+        GotLinksResponse response ->
             ( { model | links = response }
             , Cmd.none
             )
