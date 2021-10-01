@@ -19,6 +19,7 @@ import Html.Events exposing (onClick, onInput)
 import RemoteData exposing (RemoteData)
 import Svg exposing (path, svg)
 import Svg.Attributes as Svg
+import Task
 
 
 
@@ -71,11 +72,12 @@ linksPageInfoSelection =
         |> with PageInfo.startCursor
 
 
-makeRequest : Cmd Msg
 makeRequest =
     linksQuery Nothing
         |> Graphql.Http.queryRequest endpoint
-        |> Graphql.Http.send (RemoteData.fromResult >> GotLinksResponse)
+        |> Graphql.Http.withHeader "authorization" "Bearer abcdefgh12345678"
+        |> Graphql.Http.toTask
+        |> Task.mapError (Graphql.Http.mapError <| always ())
 
 
 
@@ -95,7 +97,9 @@ type alias LinkData =
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( { links = RemoteData.Loading }, makeRequest )
+    ( { links = RemoteData.Loading }
+    , makeRequest |> Task.attempt (RemoteData.fromResult >> GotLinksResponse)
+    )
 
 
 
