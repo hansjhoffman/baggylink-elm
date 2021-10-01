@@ -25,7 +25,7 @@ import Svg.Attributes as Svg
 -- queryAllLinks : Cursor -> SelectionSet (Paginated (List LinkData)) RootQuery
 
 
-queryAllLinks cursor =
+linksQuery cursor =
     Query.links
         (\optionals ->
             { optionals
@@ -73,7 +73,7 @@ linksPageInfoSelection =
 
 makeRequest : Cmd Msg
 makeRequest =
-    queryAllLinks Nothing
+    linksQuery Nothing
         |> Graphql.Http.queryRequest endpoint
         |> Graphql.Http.send (RemoteData.fromResult >> GotLinksResponse)
 
