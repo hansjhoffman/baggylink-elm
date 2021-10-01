@@ -67,7 +67,7 @@ makeRequest : GqlTask (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))
 makeRequest =
     linksQuery Nothing
         |> Graphql.Http.queryRequest endpoint
-        |> Graphql.Http.withHeader "authorization" "Bearer abcdefgh12345678"
+        |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
         |> Graphql.Http.toTask
         |> Task.mapError (Graphql.Http.mapError <| always ())
 
