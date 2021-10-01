@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Bagheera.Object exposing (Link, PageInfo)
+import Bagheera.Object exposing (Link, LinkConnection, PageInfo)
 import Bagheera.Object.Link as Link
 import Bagheera.Object.LinkConnection as LinkConnection
 import Bagheera.Object.LinkEdge as LinkEdge
@@ -16,16 +16,13 @@ import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import Html exposing (..)
 import Html.Attributes exposing (attribute, class, placeholder, type_)
 import Html.Events exposing (onClick, onInput)
-import RemoteData exposing (RemoteData)
+import RemoteData
 import Svg exposing (path, svg)
 import Svg.Attributes as Svg
 import Task
 
 
-
--- queryAllLinks : Cursor -> SelectionSet (Paginated (List LinkData)) RootQuery
-
-
+linksQuery : Cursor -> SelectionSet (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
 linksQuery cursor =
     Query.links
         (\optionals ->
@@ -37,20 +34,14 @@ linksQuery cursor =
         linksSelection
 
 
-
--- linksSelection : SelectionSet (Paginated (List LinkData)) LinkConnection
-
-
+linksSelection : SelectionSet (Paginated (Maybe (List (Maybe (Maybe LinkData))))) LinkConnection
 linksSelection =
     SelectionSet.succeed Paginated
         |> with linksEdgesSelection
         |> with (LinkConnection.pageInfo linksPageInfoSelection)
 
 
-
--- linksEdgesSelection : SelectionSet (List LinkData) LinkConnection
-
-
+linksEdgesSelection : SelectionSet (Maybe (List (Maybe (Maybe LinkData)))) LinkConnection
 linksEdgesSelection =
     LinkConnection.edges (LinkEdge.node linksNodeSelection)
 
@@ -72,6 +63,7 @@ linksPageInfoSelection =
         |> with PageInfo.startCursor
 
 
+makeRequest : GqlTask (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData))))))
 makeRequest =
     linksQuery Nothing
         |> Graphql.Http.queryRequest endpoint

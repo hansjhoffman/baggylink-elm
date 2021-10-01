@@ -28,8 +28,8 @@ type alias Cursor =
     Maybe String
 
 
-{-| elm-graphql allows also to get some "possibly recovered data",
-but we don't care, that's why we have a Unit type as a parameter to Error.
+{-| elm-graphql gives us the ability to "possibly recovered data",
+but we don't care, so we use a Unit type as a parameter to Error.
 -}
 type alias GqlResponse a =
     RemoteData (Graphql.Http.Error ()) a
