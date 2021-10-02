@@ -9,6 +9,8 @@
   "scripts": {
     "build": "make build",
     "format": "make format",
+    "lint": "make lint",
+    "lint:fix": "make lint-fix",
     "prepare": "is-ci || husky install",
     "preview": "make preview",
     "schema": "make schema",

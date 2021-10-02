@@ -65,11 +65,12 @@ format-elm: ## Format elm files
 	elm-format src/ --yes
 
 .PHONY: lint
-lint: lint-elm ## Format everything
+lint: ## Lint elm files
+	elm-review
 
 .PHONY: lint-elm
-lint-elm: ## Lint elm files
-	elm-review
+lint-fix: ## Lint fix all elm files
+	elm-review --fix-all
 
 .PHONY: schema
 schema: ## Fetch latest GraphQL schema
