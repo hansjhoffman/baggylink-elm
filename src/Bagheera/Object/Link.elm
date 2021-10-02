@@ -4,44 +4,37 @@
 
 module Bagheera.Object.Link exposing (..)
 
-import Bagheera.InputObject
-import Bagheera.Interface
 import Bagheera.Object
 import Bagheera.Scalar
 import Bagheera.ScalarCodecs
-import Bagheera.Union
-import Graphql.Internal.Builder.Argument as Argument exposing (Argument)
 import Graphql.Internal.Builder.Object as Object
-import Graphql.Internal.Encode as Encode exposing (Value)
-import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
-import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
 
 {-| Auto-generated hash for the shortened URL
 -}
-hash : SelectionSet (Maybe String) Bagheera.Object.Link
+hash : SelectionSet String Bagheera.Object.Link
 hash =
-    Object.selectionForField "(Maybe String)" "hash" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "hash" [] Decode.string
 
 
-{-| All instances that a link has been viewed
+{-| The opaque ID of the link object
 -}
-hits : SelectionSet (Maybe Int) Bagheera.Object.Link
-hits =
-    Object.selectionForField "(Maybe Int)" "hits" [] (Decode.int |> Decode.nullable)
-
-
-{-| The ID of an object
--}
-id : SelectionSet Bagheera.ScalarCodecs.Id Bagheera.Object.Link
+id : SelectionSet Bagheera.ScalarCodecs.LinkId Bagheera.Object.Link
 id =
-    Object.selectionForField "ScalarCodecs.Id" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecId |> .decoder)
+    Object.selectionForField "ScalarCodecs.LinkId" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecLinkId |> .decoder)
 
 
 {-| Destination URL
 -}
-url : SelectionSet (Maybe String) Bagheera.Object.Link
+url : SelectionSet String Bagheera.Object.Link
 url =
-    Object.selectionForField "(Maybe String)" "url" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "url" [] Decode.string
+
+
+{-| Number of times a link has been viewed
+-}
+visits : SelectionSet (Maybe Int) Bagheera.Object.Link
+visits =
+    Object.selectionForField "(Maybe Int)" "visits" [] (Decode.int |> Decode.nullable)

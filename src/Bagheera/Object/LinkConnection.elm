@@ -4,17 +4,8 @@
 
 module Bagheera.Object.LinkConnection exposing (..)
 
-import Bagheera.InputObject
-import Bagheera.Interface
 import Bagheera.Object
-import Bagheera.Scalar
-import Bagheera.ScalarCodecs
-import Bagheera.Union
-import Graphql.Internal.Builder.Argument as Argument exposing (Argument)
 import Graphql.Internal.Builder.Object as Object
-import Graphql.Internal.Encode as Encode exposing (Value)
-import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
-import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
@@ -26,8 +17,19 @@ edges object____ =
     Object.selectionForCompositeField "edges" [] object____ (Basics.identity >> Decode.nullable >> Decode.list >> Decode.nullable)
 
 
+{-| Information to aid in pagination
+-}
 pageInfo :
     SelectionSet decodesTo Bagheera.Object.PageInfo
     -> SelectionSet decodesTo Bagheera.Object.LinkConnection
 pageInfo object____ =
     Object.selectionForCompositeField "pageInfo" [] object____ Basics.identity
+
+
+{-| A count of the total number of objects in this connection, ignoring pagination. This allows a
+client to fetch the first five objects by passing "5" as the argument to "first", then fetch
+the total count so it could display "5 of 83", for example.
+-}
+totalCount : SelectionSet (Maybe Int) Bagheera.Object.LinkConnection
+totalCount =
+    Object.selectionForField "(Maybe Int)" "totalCount" [] (Decode.int |> Decode.nullable)

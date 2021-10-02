@@ -4,23 +4,21 @@
 
 module Bagheera.Query exposing (..)
 
-import Bagheera.InputObject
 import Bagheera.Interface
 import Bagheera.Object
 import Bagheera.Scalar
 import Bagheera.ScalarCodecs
-import Bagheera.Union
-import Graphql.Internal.Builder.Argument as Argument exposing (Argument)
+import Graphql.Internal.Builder.Argument as Argument
 import Graphql.Internal.Builder.Object as Object
-import Graphql.Internal.Encode as Encode exposing (Value)
-import Graphql.Operation exposing (RootMutation, RootQuery, RootSubscription)
+import Graphql.Internal.Encode as Encode
+import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode
 
 
 type alias LinkRequiredArguments =
-    { id : Bagheera.ScalarCodecs.Id }
+    { id : Bagheera.ScalarCodecs.LinkId }
 
 
 {-| Get details about a link
@@ -30,7 +28,7 @@ link :
     -> SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) RootQuery
 link requiredArgs____ object____ =
-    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
 
 
 type alias LinksOptionalArguments =
@@ -57,3 +55,20 @@ links fillInOptionals____ object____ =
                 |> List.filterMap Basics.identity
     in
     Object.selectionForCompositeField "links" optionalArgs____ object____ (Basics.identity >> Decode.nullable)
+
+
+type alias NodeRequiredArguments =
+    { id : Bagheera.ScalarCodecs.Id }
+
+
+{-| Fetches an object given an ID
+
+  - id - The ID of an object.
+
+-}
+node :
+    NodeRequiredArguments
+    -> SelectionSet decodesTo Bagheera.Interface.Node
+    -> SelectionSet (Maybe decodesTo) RootQuery
+node requiredArgs____ object____ =
+    Object.selectionForCompositeField "node" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)

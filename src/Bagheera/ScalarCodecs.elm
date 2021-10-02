@@ -5,15 +5,19 @@
 module Bagheera.ScalarCodecs exposing (..)
 
 import Bagheera.Scalar exposing (defaultCodecs)
-import Json.Decode as Decode exposing (Decoder)
 
 
 type alias Id =
     Bagheera.Scalar.Id
 
 
-codecs : Bagheera.Scalar.Codecs Id
+type alias LinkId =
+    Bagheera.Scalar.LinkId
+
+
+codecs : Bagheera.Scalar.Codecs Id LinkId
 codecs =
     Bagheera.Scalar.defineCodecs
         { codecId = defaultCodecs.codecId
+        , codecLinkId = defaultCodecs.codecLinkId
         }

@@ -1,16 +1,76 @@
 module Main exposing (..)
 
+import Bagheera.Object exposing (Link, LinkConnection, PageInfo)
+import Bagheera.Object.Link as Link
+import Bagheera.Object.LinkConnection as LinkConnection
+import Bagheera.Object.LinkEdge as LinkEdge
+import Bagheera.Object.PageInfo as PageInfo
+import Bagheera.Query as Query
+import Bagheera.ScalarCodecs exposing (LinkId)
 import Browser
+import Gql exposing (..)
+import Graphql.Http
+import Graphql.Operation exposing (RootQuery)
+import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import Html exposing (..)
 import Html.Attributes exposing (attribute, class, placeholder, type_)
 import Html.Events exposing (onClick, onInput)
+import RemoteData
 import Svg exposing (path, svg)
 import Svg.Attributes as Svg
+import Task
 
 
-endpoint : String
-endpoint =
-    "http://localhost:/4000/graphql"
+linksQuery : Cursor -> SelectionSet (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
+linksQuery cursor =
+    Query.links
+        (\optionals ->
+            { optionals
+                | first = Present 10
+                , after = OptionalArgument.fromMaybe cursor
+            }
+        )
+        linksSelection
+
+
+linksSelection : SelectionSet (Paginated (Maybe (List (Maybe (Maybe LinkData))))) LinkConnection
+linksSelection =
+    SelectionSet.succeed Paginated
+        |> with linksEdgesSelection
+        |> with (LinkConnection.pageInfo linksPageInfoSelection)
+
+
+linksEdgesSelection : SelectionSet (Maybe (List (Maybe (Maybe LinkData)))) LinkConnection
+linksEdgesSelection =
+    LinkConnection.edges (LinkEdge.node linksNodeSelection)
+
+
+linksNodeSelection : SelectionSet LinkData Link
+linksNodeSelection =
+    SelectionSet.map4 LinkData
+        Link.hash
+        Link.id
+        Link.url
+        Link.visits
+
+
+linksPageInfoSelection : SelectionSet CurrentPageInfo PageInfo
+linksPageInfoSelection =
+    SelectionSet.succeed CurrentPageInfo
+        |> with PageInfo.endCursor
+        |> with PageInfo.hasNextPage
+        |> with PageInfo.hasPreviousPage
+        |> with PageInfo.startCursor
+
+
+makeRequest : GqlTask (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData))))))
+makeRequest =
+    linksQuery Nothing
+        |> Graphql.Http.queryRequest endpoint
+        |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
+        |> Graphql.Http.toTask
+        |> Task.mapError (Graphql.Http.mapError <| always ())
 
 
 
@@ -18,12 +78,22 @@ endpoint =
 
 
 type alias Model =
-    Int
+    { links : GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) }
+
+
+type alias LinkData =
+    { hash : String
+    , id : LinkId
+    , url : String
+    , visits : Maybe Int
+    }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( 1, Cmd.none )
+    ( { links = RemoteData.Loading }
+    , makeRequest |> Task.attempt (RemoteData.fromResult >> GotLinksResponse)
+    )
 
 
 
@@ -41,15 +111,28 @@ subscriptions _ =
 
 type Msg
     = NoOp
+    | GotLinksResponse (GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model, Cmd.none )
+update msg model =
+    case msg of
+        GotLinksResponse response ->
+            ( { model | links = response }
+            , Cmd.none
+            )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 
 -- VIEW
+
+
+mkTestAttribute : String -> Attribute msg
+mkTestAttribute key =
+    attribute "data-testid" (String.toLower key)
 
 
 viewFilterInput : Html Msg
@@ -72,6 +155,7 @@ viewFilterInput =
             ]
         , input
             [ attribute "aria-label" "Filter Links"
+            , mkTestAttribute "filter-link-input"
             , class "tw-w-full tw-text-sm tw-text-black tw-placeholder-gray-500 tw-border tw-border-gray-200 tw-rounded-md focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500 tw-py-2 tw-px-10"
             , onInput (\_ -> NoOp)
             , placeholder "Filter Links"
@@ -81,20 +165,37 @@ viewFilterInput =
         ]
 
 
-viewLinkCard : Html msg
-viewLinkCard =
-    li [] []
+viewLinkCard : LinkData -> Html msg
+viewLinkCard link =
+    li [] [ text link.hash ]
+
+
+viewLinks : Model -> Html msg
+viewLinks model =
+    case model.links of
+        RemoteData.NotAsked ->
+            div [] [ text "not asked" ]
+
+        RemoteData.Loading ->
+            div [] [ text "loading" ]
+
+        RemoteData.Success links ->
+            ul [] [ text "yay!" ]
+
+        RemoteData.Failure _ ->
+            div [] [ text "failure :(" ]
 
 
 view : Model -> Browser.Document Msg
-view _ =
+view model =
     { title = "Baggylinks"
     , body =
         [ section [ class "tw-w-1/2 tw-mx-auto" ]
             [ header [ class "tw-flex tw-items-center tw-justify-between tw-mb-6" ]
                 [ h2 [ class "tw-prose-xl" ] [ text "Links" ]
                 , button
-                    [ class "tw-group tw-flex tw-items-center tw-bg-blue-300 hover:tw-bg-blue-400 tw-rounded-md tw-text-blue-600 hover:tw-text-blue-800 tw-text-sm tw-font-medium tw-px-4 tw-py-2"
+                    [ mkTestAttribute "new-link-btn"
+                    , class "tw-group tw-flex tw-items-center tw-bg-blue-300 hover:tw-bg-blue-400 tw-rounded-md tw-text-blue-600 hover:tw-text-blue-800 tw-text-sm tw-font-medium tw-px-4 tw-py-2"
                     , onClick NoOp
                     ]
                     [ svg
@@ -116,7 +217,7 @@ view _ =
                     ]
                 ]
             , viewFilterInput
-            , ul [] []
+            , viewLinks model
             ]
         ]
     }
