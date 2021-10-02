@@ -48,10 +48,11 @@ linksEdgesSelection =
 
 linksNodeSelection : SelectionSet LinkData Link
 linksNodeSelection =
-    SelectionSet.map3 LinkData
+    SelectionSet.map4 LinkData
         Link.hash
         Link.id
         Link.url
+        Link.visits
 
 
 linksPageInfoSelection : SelectionSet CurrentPageInfo PageInfo
@@ -84,6 +85,7 @@ type alias LinkData =
     { hash : String
     , id : LinkId
     , url : String
+    , visits : Maybe Int
     }
 
 
