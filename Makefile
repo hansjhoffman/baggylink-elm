@@ -54,8 +54,8 @@ preview: build ## See what the production build will look like
 run: ## Run web app
 	yarn vite --https
 
-# Check, lint and format targets
-# ------------------------------
+# Check, lint, format and test targets
+# ------------------------------------
 
 .PHONY: format
 format: format-elm ## Format everything
@@ -74,3 +74,7 @@ lint-elm: ## Lint elm files
 .PHONY: schema
 schema: ## Fetch latest GraphQL schema
 	yarn elm-graphql http://localhost:4000/graphql --base Bagheera
+
+.PHONY: test
+test: ## Test elm code
+	elm-test
