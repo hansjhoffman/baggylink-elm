@@ -10,11 +10,15 @@ import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
 
 
-cursor : SelectionSet (Maybe String) Bagheera.Object.LinkEdge
+{-| A cursor for use in pagination
+-}
+cursor : SelectionSet String Bagheera.Object.LinkEdge
 cursor =
-    Object.selectionForField "(Maybe String)" "cursor" [] (Decode.string |> Decode.nullable)
+    Object.selectionForField "String" "cursor" [] Decode.string
 
 
+{-| The item at the end of the edge
+-}
 node :
     SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) Bagheera.Object.LinkEdge

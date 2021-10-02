@@ -17,8 +17,19 @@ edges object____ =
     Object.selectionForCompositeField "edges" [] object____ (Basics.identity >> Decode.nullable >> Decode.list >> Decode.nullable)
 
 
+{-| Information to aid in pagination
+-}
 pageInfo :
     SelectionSet decodesTo Bagheera.Object.PageInfo
     -> SelectionSet decodesTo Bagheera.Object.LinkConnection
 pageInfo object____ =
     Object.selectionForCompositeField "pageInfo" [] object____ Basics.identity
+
+
+{-| A count of the total number of objects in this connection, ignoring pagination. This allows a
+client to fetch the first five objects by passing "5" as the argument to "first", then fetch
+the total count so it could display "5 of 83", for example.
+-}
+totalCount : SelectionSet (Maybe Int) Bagheera.Object.LinkConnection
+totalCount =
+    Object.selectionForField "(Maybe Int)" "totalCount" [] (Decode.int |> Decode.nullable)
