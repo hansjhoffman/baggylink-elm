@@ -19,7 +19,6 @@ let
     mkdir -p .nix-elm
     export ELM_HOME=$PWD/.nix-elm
   '';
-
 in pkgs.mkShell {
   buildInputs = inputs;
   shellHook = hooks;
