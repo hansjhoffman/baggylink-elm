@@ -179,7 +179,7 @@ viewLinks model =
         RemoteData.Loading ->
             div [] [ text "loading" ]
 
-        RemoteData.Success links ->
+        RemoteData.Success _ ->
             ul [] [ text "yay!" ]
 
         RemoteData.Failure _ ->
