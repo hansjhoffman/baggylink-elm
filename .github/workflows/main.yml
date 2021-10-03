@@ -32,8 +32,7 @@ jobs:
 
       - name: Format
         run: |
-          nix-shell --pure --run "make format"
-          nix-shell --pure --run "git status --porcelain; test -z '$(git status --porcelain)'"
+          nix-shell --pure --run "elm-format src/ --validate"
 
       - name: Lint
         run: nix-shell --pure --run "echo 'add me'"
