@@ -35,7 +35,7 @@ jobs:
           nix-shell --pure --run "elm-format src/ --validate"
 
       - name: Lint
-        run: nix-shell --pure --run "echo 'add me'"
+        run: nix-shell --pure --run "NO_ELM_TOOLING_INSTALL=true && make lint"
 
       - name: Test
         run: nix-shell --pure --run "echo 'add me'"
