@@ -30,14 +30,13 @@ jobs:
           nix-shell --pure --run "elm make --output=/dev/null src/Main.elm"
           nix-shell --pure --run "cd review && elm make src/ReviewConfig.elm"
 
-      # - name: Lint
-      #   run: nix-shell --pure --run "make lint"
-
       - name: Format
-        run: nix-shell --pure --run "make format"
+        run: |
+          nix-shell --pure --run "make format"
+          nix-shell --pure --run "git status --porcelain; test -z '$(git status --porcelain)'"
 
-      - name: Ensure clean
-        run: nix-shell --pure --run "git status --porcelain; test -z '$(git status --porcelain)'"
+      - name: Lint
+        run: nix-shell --pure --run "echo 'add me'"
 
       - name: Test
         run: nix-shell --pure --run "make test"
