@@ -30,8 +30,8 @@ jobs:
           nix-shell --pure --run "elm make --output=/dev/null src/Main.elm"
           nix-shell --pure --run "cd review && elm make src/ReviewConfig.elm"
 
-      - name: Lint
-        run: nix-shell --pure --run "make lint"
+      # - name: Lint
+      #   run: nix-shell --pure --run "make lint"
 
       - name: Format
         run: nix-shell --pure --run "make format"
