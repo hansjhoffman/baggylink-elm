@@ -19,7 +19,7 @@ import Html.Events as Events
 import RemoteData as RD
 import Svg
 import Svg.Attributes as SvgAttr
-import Task
+import Task as T
 
 
 linksQuery : Cursor -> SelectionSet (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
@@ -70,7 +70,7 @@ makeRequest =
         |> Graphql.Http.queryRequest endpoint
         |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
         |> Graphql.Http.toTask
-        |> Task.mapError (Graphql.Http.mapError <| always ())
+        |> T.mapError (Graphql.Http.mapError <| always ())
 
 
 
@@ -92,7 +92,7 @@ type alias LinkData =
 init : Flags -> ( Model, Cmd Msg )
 init _ =
     ( { links = RD.Loading }
-    , makeRequest |> Task.attempt (RD.fromResult >> GotLinksResponse)
+    , makeRequest |> T.attempt (RD.fromResult >> GotLinksResponse)
     )
 
 
