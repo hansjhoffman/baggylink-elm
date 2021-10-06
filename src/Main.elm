@@ -14,11 +14,11 @@ import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
 import Html exposing (..)
-import Html.Attributes exposing (attribute, class, placeholder, type_)
-import Html.Events exposing (onClick, onInput)
-import RemoteData
-import Svg exposing (path, svg)
-import Svg.Attributes as Svg
+import Html.Attributes as Attr
+import Html.Events as Events
+import RemoteData as RD
+import Svg
+import Svg.Attributes as SvgAttr
 import Task
 
 
@@ -91,8 +91,8 @@ type alias LinkData =
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( { links = RemoteData.Loading }
-    , makeRequest |> Task.attempt (RemoteData.fromResult >> GotLinksResponse)
+    ( { links = RD.Loading }
+    , makeRequest |> Task.attempt (RD.fromResult >> GotLinksResponse)
     )
 
 
@@ -132,34 +132,34 @@ update msg model =
 
 mkTestAttribute : String -> Attribute msg
 mkTestAttribute key =
-    attribute "data-testid" (String.toLower key)
+    Attr.attribute "data-testid" (String.toLower key)
 
 
 viewFilterInput : Html Msg
 viewFilterInput =
-    form [ class "tw-relative tw-mb-6" ]
-        [ svg
-            [ Svg.class "tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400"
-            , Svg.fill "currentColor"
-            , Svg.height "20"
-            , Svg.width "20"
-            , Svg.version "1.1"
-            , Svg.viewBox "0 0 20 20"
+    form [ Attr.class "tw-relative tw-mb-6" ]
+        [ Svg.svg
+            [ SvgAttr.class "tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400"
+            , SvgAttr.fill "currentColor"
+            , SvgAttr.height "20"
+            , SvgAttr.width "20"
+            , SvgAttr.version "1.1"
+            , SvgAttr.viewBox "0 0 20 20"
             ]
-            [ path
-                [ Svg.clipRule "evenodd"
-                , Svg.fillRule "evenodd"
-                , Svg.d "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+            [ Svg.path
+                [ SvgAttr.clipRule "evenodd"
+                , SvgAttr.fillRule "evenodd"
+                , SvgAttr.d "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                 ]
                 []
             ]
         , input
-            [ attribute "aria-label" "Filter Links"
+            [ Attr.attribute "aria-label" "Filter Links"
             , mkTestAttribute "filter-link-input"
-            , class "tw-w-full tw-text-sm tw-text-black tw-placeholder-gray-500 tw-border tw-border-gray-200 tw-rounded-md focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500 tw-py-2 tw-px-10"
-            , onInput (\_ -> NoOp)
-            , placeholder "Filter Links"
-            , type_ "text"
+            , Attr.class "tw-w-full tw-text-sm tw-text-black tw-placeholder-gray-500 tw-border tw-border-gray-200 tw-rounded-md focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500 tw-py-2 tw-px-10"
+            , Events.onInput (\_ -> NoOp)
+            , Attr.placeholder "Filter Links"
+            , Attr.type_ "text"
             ]
             []
         ]
@@ -173,16 +173,16 @@ viewLinkCard link =
 viewLinks : Model -> Html msg
 viewLinks model =
     case model.links of
-        RemoteData.NotAsked ->
+        RD.NotAsked ->
             div [] [ text "not asked" ]
 
-        RemoteData.Loading ->
+        RD.Loading ->
             div [] [ text "loading" ]
 
-        RemoteData.Success _ ->
+        RD.Success _ ->
             ul [] [ text "yay!" ]
 
-        RemoteData.Failure _ ->
+        RD.Failure _ ->
             div [] [ text "failure :(" ]
 
 
@@ -190,26 +190,26 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Baggylinks"
     , body =
-        [ section [ class "tw-w-1/2 tw-mx-auto" ]
-            [ header [ class "tw-flex tw-items-center tw-justify-between tw-mb-6" ]
-                [ h2 [ class "tw-prose-xl" ] [ text "Links" ]
+        [ section [ Attr.class "tw-w-1/2 tw-mx-auto" ]
+            [ header [ Attr.class "tw-flex tw-items-center tw-justify-between tw-mb-6" ]
+                [ h2 [ Attr.class "tw-prose-xl" ] [ text "Links" ]
                 , button
                     [ mkTestAttribute "new-link-btn"
-                    , class "tw-group tw-flex tw-items-center tw-bg-blue-300 hover:tw-bg-blue-400 tw-rounded-md tw-text-blue-600 hover:tw-text-blue-800 tw-text-sm tw-font-medium tw-px-4 tw-py-2"
-                    , onClick NoOp
+                    , Attr.class "tw-group tw-flex tw-items-center tw-bg-blue-300 hover:tw-bg-blue-400 tw-rounded-md tw-text-blue-600 hover:tw-text-blue-800 tw-text-sm tw-font-medium tw-px-4 tw-py-2"
+                    , Events.onClick NoOp
                     ]
-                    [ svg
-                        [ Svg.class "tw-mr-2 tw-text-blue-500"
-                        , Svg.fill "currentColor"
-                        , Svg.height "20"
-                        , Svg.width "12"
-                        , Svg.version "1.1"
-                        , Svg.viewBox "0 0 12 20"
+                    [ Svg.svg
+                        [ SvgAttr.class "tw-mr-2 tw-text-blue-500"
+                        , SvgAttr.fill "currentColor"
+                        , SvgAttr.height "20"
+                        , SvgAttr.width "12"
+                        , SvgAttr.version "1.1"
+                        , SvgAttr.viewBox "0 0 12 20"
                         ]
-                        [ path
-                            [ Svg.clipRule "evenodd"
-                            , Svg.fillRule "evenodd"
-                            , Svg.d "M6 5a1 1 0 011 1v3h3a1 1 0 110 2H7v3a1 1 0 11-2 0v-3H2a1 1 0 110-2h3V6a1 1 0 011-1z"
+                        [ Svg.path
+                            [ SvgAttr.clipRule "evenodd"
+                            , SvgAttr.fillRule "evenodd"
+                            , SvgAttr.d "M6 5a1 1 0 011 1v3h3a1 1 0 110 2H7v3a1 1 0 11-2 0v-3H2a1 1 0 110-2h3V6a1 1 0 011-1z"
                             ]
                             []
                         ]
