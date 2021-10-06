@@ -12,11 +12,11 @@ import Gql exposing (..)
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet, with)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Html exposing (..)
 import Html.Attributes as Attr
 import Html.Events as Events
-import RemoteData as RD
+import RemoteData as RD exposing (RemoteData(..))
 import Svg
 import Svg.Attributes as SvgAttr
 import Task as T
@@ -37,8 +37,8 @@ linksQuery cursor =
 linksSelection : SelectionSet (Paginated (Maybe (List (Maybe (Maybe LinkData))))) LinkConnection
 linksSelection =
     SelectionSet.succeed Paginated
-        |> with linksEdgesSelection
-        |> with (LinkConnection.pageInfo linksPageInfoSelection)
+        |> SelectionSet.with linksEdgesSelection
+        |> SelectionSet.with (LinkConnection.pageInfo linksPageInfoSelection)
 
 
 linksEdgesSelection : SelectionSet (Maybe (List (Maybe (Maybe LinkData)))) LinkConnection
@@ -58,10 +58,10 @@ linksNodeSelection =
 linksPageInfoSelection : SelectionSet CurrentPageInfo PageInfo
 linksPageInfoSelection =
     SelectionSet.succeed CurrentPageInfo
-        |> with PageInfo.endCursor
-        |> with PageInfo.hasNextPage
-        |> with PageInfo.hasPreviousPage
-        |> with PageInfo.startCursor
+        |> SelectionSet.with PageInfo.endCursor
+        |> SelectionSet.with PageInfo.hasNextPage
+        |> SelectionSet.with PageInfo.hasPreviousPage
+        |> SelectionSet.with PageInfo.startCursor
 
 
 makeRequest : GqlTask (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData))))))
@@ -91,7 +91,7 @@ type alias LinkData =
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( { links = RD.Loading }
+    ( { links = Loading }
     , makeRequest |> T.attempt (RD.fromResult >> GotLinksResponse)
     )
 
@@ -173,16 +173,16 @@ viewLinkCard link =
 viewLinks : Model -> Html msg
 viewLinks model =
     case model.links of
-        RD.NotAsked ->
+        NotAsked ->
             div [] [ text "not asked" ]
 
-        RD.Loading ->
+        Loading ->
             div [] [ text "loading" ]
 
-        RD.Success _ ->
+        Success _ ->
             ul [] [ text "yay!" ]
 
-        RD.Failure _ ->
+        Failure _ ->
             div [] [ text "failure :(" ]
 
 

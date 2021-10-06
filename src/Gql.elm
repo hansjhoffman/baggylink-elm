@@ -1,7 +1,7 @@
 module Gql exposing (..)
 
 import Graphql.Http
-import RemoteData as RD
+import RemoteData exposing (RemoteData)
 import Task as T
 
 
@@ -32,7 +32,7 @@ type alias Cursor =
 but we don't care, so we use a Unit type as a parameter to Error.
 -}
 type alias GqlResponse a =
-    RD.RemoteData (Graphql.Http.Error ()) a
+    RemoteData (Graphql.Http.Error ()) a
 
 
 type alias GqlTask t =
