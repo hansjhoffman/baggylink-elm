@@ -11,6 +11,9 @@ when inside the directory containing this file.
 
 -}
 
+import NoUnused.Dependencies
+import NoUnused.Exports
+import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule exposing (Rule)
@@ -18,4 +21,9 @@ import Review.Rule exposing (Rule)
 
 config : List Rule
 config =
-    [ NoUnused.Patterns.rule, NoUnused.Variables.rule ]
+    [ NoUnused.Exports.rule
+    , NoUnused.Dependencies.rule
+    , NoUnused.Parameters.rule
+    , NoUnused.Patterns.rule
+    , NoUnused.Variables.rule
+    ]
