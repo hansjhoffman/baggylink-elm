@@ -135,36 +135,6 @@ mkTestAttribute key =
     Attr.attribute "data-testid" (String.toLower key)
 
 
-viewFilterInput : Html Msg
-viewFilterInput =
-    form [ Attr.class "tw-relative tw-mb-6" ]
-        [ Svg.svg
-            [ SvgAttr.class "tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-text-gray-400"
-            , SvgAttr.fill "currentColor"
-            , SvgAttr.height "20"
-            , SvgAttr.width "20"
-            , SvgAttr.version "1.1"
-            , SvgAttr.viewBox "0 0 20 20"
-            ]
-            [ Svg.path
-                [ SvgAttr.clipRule "evenodd"
-                , SvgAttr.fillRule "evenodd"
-                , SvgAttr.d "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                ]
-                []
-            ]
-        , input
-            [ Attr.attribute "aria-label" "Filter Links"
-            , mkTestAttribute "filter-link-input"
-            , Attr.class "tw-w-full tw-text-sm tw-text-black tw-placeholder-gray-500 tw-border tw-border-gray-200 tw-rounded-md focus:tw-ring-1 focus:tw-border-blue-500 focus:tw-ring-blue-500 tw-py-2 tw-px-10"
-            , Events.onInput (\_ -> NoOp)
-            , Attr.placeholder "Filter Links"
-            , Attr.type_ "text"
-            ]
-            []
-        ]
-
-
 viewLinkCard : LinkData -> Html msg
 viewLinkCard link =
     li [] [ text link.hash ]
@@ -216,7 +186,6 @@ view model =
                     , text "New"
                     ]
                 ]
-            , viewFilterInput
             , viewLinks model
             ]
         ]

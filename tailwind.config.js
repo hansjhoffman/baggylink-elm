@@ -1,14 +1,18 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   mode: "jit",
   prefix: "tw-",
   purge: ["index.html", "./src/**/*.{elm,js,ts}"],
   darkMode: true,
   theme: {
+    colors: {},
     extend: {},
     fontFamily: {
       // https://fontjoy.com/
-      sans: ["Fira Sans", "sans-serif"],
-      serif: ["Merriweather", "serif"],
+      mono: ["DM Mono", ...defaultTheme.fontFamily.mono],
+      sans: ["Fira Sans", ...defaultTheme.fontFamily.sans],
+      serif: ["Merriweather", ...defaultTheme.fontFamily.serif],
     },
   },
   variants: {
