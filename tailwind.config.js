@@ -6,7 +6,6 @@ module.exports = {
   purge: ["index.html", "./src/**/*.{elm,js,ts}"],
   darkMode: true,
   theme: {
-    colors: {},
     extend: {},
     fontFamily: {
       // https://fontjoy.com/
