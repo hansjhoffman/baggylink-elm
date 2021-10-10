@@ -6,7 +6,11 @@ module.exports = {
   purge: ["index.html", "./src/**/*.{elm,js,ts}"],
   darkMode: true,
   theme: {
-    extend: {},
+    extend: {
+      dropShadow: {
+        hotPink: "#eb64b9 0px 1px 30px",
+      },
+    },
     fontFamily: {
       // https://www.youtube.com/watch?v=sOnBG2wUm1s
       mono: ["DM Mono", ...defaultTheme.fontFamily.mono],

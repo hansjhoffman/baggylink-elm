@@ -164,10 +164,10 @@ viewLinkCard link =
     div [ Attr.class "tw-bg-[#b381c5] tw-rounded-md tw-p-4 tw-grid tw-grid-cols-3 tw-text-white" ]
         [ div [ Attr.class "tw-flex tw-flex-col" ]
             [ span [] [ text ("https://localhost:4000/" ++ link.hash) ]
-            , span [] [ text link.url ]
+            , span [ Attr.class "tw-text-xs" ] [ text link.url ]
             ]
         , div [ Attr.class "tw-flex tw-justify-center tw-items-center" ]
-            [ span []
+            [ span [ Attr.class "tw-text-sm" ]
                 [ text ("hits: " ++ (String.fromInt <| Maybe.withDefault 0 link.visits))
                 ]
             ]
@@ -231,7 +231,7 @@ view model =
                         [ text "My Links" ]
                     , button
                         [ mkTestAttribute "new-link-btn"
-                        , Attr.class "tw-ml-8 tw-flex tw-items-center tw-bg-[#eb64b9] tw-px-3 tw-text-sm tw-text-white tw-rounded-md tw-border-none focus:tw-outline-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-h-9"
+                        , Attr.class "tw-ml-8 tw-flex tw-items-center tw-bg-[#eb64b9] tw-px-3 tw-text-sm tw-text-white tw-rounded-md tw-border-none focus:tw-outline-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-h-9 hover:tw-drop-shadow-hotPink hover:tw-transition"
                         , Events.onClick NoOp
                         ]
                         [ Svg.svg
@@ -255,7 +255,7 @@ view model =
                 , select
                     [ mkTestAttribute "sort-by-select"
                     , Attr.autocomplete False
-                    , Attr.class "tw-text-white tw-text-sm tw-bg-[#40b4c4] tw-rounded-md tw-border-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2"
+                    , Attr.class "tw-text-white tw-text-sm tw-bg-[#40b4c4] tw-rounded-md tw-border-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-cursor-pointer"
                     , Attr.name "link-sort-options"
                     ]
                     [ option [ Events.onClick (SortLinks ByCreatedAt) ] [ text "Created" ]
