@@ -157,11 +157,17 @@ mkTestAttribute key =
 
 viewLinkCard : LinkData -> Html Msg
 viewLinkCard link =
-    div [ Attr.class "tw-bg-[#b381c5] tw-rounded-md tw-p-4" ]
-        [ text ("https://localhost:4000/" ++ link.hash)
-        , span [] [ text "hits:" ]
-        , span [] [ text (String.fromInt <| Maybe.withDefault 0 link.visits) ]
-        , div [ Attr.class "tw-flex tw-space-x-3" ]
+    div [ Attr.class "tw-bg-[#b381c5] tw-rounded-md tw-p-4 tw-grid tw-grid-cols-3 tw-text-white" ]
+        [ div [ Attr.class "tw-flex tw-flex-col" ]
+            [ span [] [ text ("https://localhost:4000/" ++ link.hash) ]
+            , span [] [ text link.url ]
+            ]
+        , div [ Attr.class "tw-flex tw-justify-center tw-items-center" ]
+            [ span []
+                [ text ("hits: " ++ (String.fromInt <| Maybe.withDefault 0 link.visits))
+                ]
+            ]
+        , div [ Attr.class "tw-flex tw-space-x-3 tw-justify-end" ]
             [ button [ Events.onClick NoOp ] [ text "Edit" ]
             , button [ Events.onClick NoOp ] [ text "View" ]
             , button [ Events.onClick NoOp ] [ text "Delete" ]
