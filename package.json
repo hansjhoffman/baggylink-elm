@@ -1,7 +1,7 @@
 {
   "name": "baggylink",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.ts",
   "license": "MIT",
   "engines": {
     "node": ">=12.17.0"
@@ -14,7 +14,8 @@
     "prepare": "is-ci || husky install",
     "preview": "make preview",
     "schema": "make schema",
-    "start": "make run"
+    "start": "make run",
+    "test": "make test"
   },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.2",
@@ -23,10 +24,11 @@
     "autoprefixer": "^10.3.7",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
-    "lint-staged": "^11.2.0",
+    "lint-staged": "^11.2.2",
     "postcss": "^8.3.9",
     "tailwindcss": "^2.2.16",
-    "vite": "^2.6.3",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.5",
     "vite-plugin-elm": "^2.5.0"
   },
   "lint-staged": {

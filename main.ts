@@ -5,6 +5,6 @@ const app = Elm.Main.init({
   node: document.getElementById("app"),
 });
 
-app.ports.openExternalLink.subscribe((externalLink) => {
+app.ports.openExternalLink.subscribe((externalLink: string) => {
   window.open(externalLink, "_blank").focus();
 });

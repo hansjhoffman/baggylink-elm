@@ -38,8 +38,12 @@ targets:
 clean: ## Remove build artifacts
 	rm -rf dist
 
+.PHONE: compile-ts
+compile-ts: ## Run Typscript compiler
+	yarn tsc
+
 .PHONY: build
-build: ## Make a production build
+build: compile-ts ## Make a production build
 	yarn vite build
 
 .PHONY: deps
