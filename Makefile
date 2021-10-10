@@ -74,7 +74,7 @@ lint-fix: ## Lint fix all elm files
 
 .PHONY: schema
 schema: ## Fetch latest GraphQL schema
-	yarn elm-graphql http://localhost:4000/graphql --base Bagheera
+	yarn elm-graphql http://localhost:4000/graphql --base Bagheera --scalar-codecs ScalarCodecs
 
 .PHONY: test
 test: ## Test elm code

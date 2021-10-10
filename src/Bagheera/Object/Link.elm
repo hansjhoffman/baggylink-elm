@@ -6,10 +6,10 @@ module Bagheera.Object.Link exposing (..)
 
 import Bagheera.Object
 import Bagheera.Scalar
-import Bagheera.ScalarCodecs
 import Graphql.Internal.Builder.Object as Object
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
+import ScalarCodecs
 
 
 {-| Auto-generated hash for the shortened URL
@@ -21,9 +21,9 @@ hash =
 
 {-| The opaque ID of the link object
 -}
-id : SelectionSet Bagheera.ScalarCodecs.LinkId Bagheera.Object.Link
+id : SelectionSet ScalarCodecs.LinkId Bagheera.Object.Link
 id =
-    Object.selectionForField "ScalarCodecs.LinkId" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecLinkId |> .decoder)
+    Object.selectionForField "ScalarCodecs.LinkId" "id" [] (ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecLinkId |> .decoder)
 
 
 {-| Destination URL

@@ -4,7 +4,15 @@
 
 module Bagheera.VerifyScalarCodecs exposing (..)
 
+{-
+   This file is intended to be used to ensure that custom scalar decoder
+   files are valid. It is compiled using `elm make` by the CLI.
+-}
 
-placeholder : String
-placeholder =
-    ""
+import Bagheera.Scalar
+import ScalarCodecs
+
+
+verify : Bagheera.Scalar.Codecs ScalarCodecs.Id ScalarCodecs.LinkId
+verify =
+    ScalarCodecs.codecs

@@ -7,12 +7,12 @@ module Bagheera.Mutation exposing (..)
 import Bagheera.InputObject
 import Bagheera.Object
 import Bagheera.Scalar
-import Bagheera.ScalarCodecs
 import Graphql.Internal.Builder.Argument as Argument
 import Graphql.Internal.Builder.Object as Object
 import Graphql.Operation exposing (RootMutation)
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
+import ScalarCodecs
 
 
 type alias CreateLinkRequiredArguments =
@@ -30,7 +30,7 @@ createLink requiredArgs____ object____ =
 
 
 type alias DeleteLinkRequiredArguments =
-    { id : Bagheera.ScalarCodecs.LinkId }
+    { id : ScalarCodecs.LinkId }
 
 
 {-| Delete a link
@@ -40,7 +40,7 @@ deleteLink :
     -> SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) RootMutation
 deleteLink requiredArgs____ object____ =
-    Object.selectionForCompositeField "deleteLink" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "deleteLink" [ Argument.required "id" requiredArgs____.id (ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
 
 
 type alias UpdateLinkRequiredArguments =

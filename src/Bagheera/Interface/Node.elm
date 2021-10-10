@@ -7,9 +7,9 @@ module Bagheera.Interface.Node exposing (..)
 import Bagheera.Interface
 import Bagheera.Object
 import Bagheera.Scalar
-import Bagheera.ScalarCodecs
 import Graphql.Internal.Builder.Object as Object
 import Graphql.SelectionSet exposing (SelectionSet)
+import ScalarCodecs
 
 
 type alias Fragments decodesTo =
@@ -39,6 +39,6 @@ maybeFragments =
 
 {-| The ID of the object.
 -}
-id : SelectionSet Bagheera.ScalarCodecs.Id Bagheera.Interface.Node
+id : SelectionSet ScalarCodecs.Id Bagheera.Interface.Node
 id =
-    Object.selectionForField "ScalarCodecs.Id" "id" [] (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecId |> .decoder)
+    Object.selectionForField "ScalarCodecs.Id" "id" [] (ScalarCodecs.codecs |> Bagheera.Scalar.unwrapCodecs |> .codecId |> .decoder)

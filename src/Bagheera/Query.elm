@@ -7,7 +7,6 @@ module Bagheera.Query exposing (..)
 import Bagheera.Interface
 import Bagheera.Object
 import Bagheera.Scalar
-import Bagheera.ScalarCodecs
 import Graphql.Internal.Builder.Argument as Argument
 import Graphql.Internal.Builder.Object as Object
 import Graphql.Internal.Encode as Encode
@@ -15,10 +14,11 @@ import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet exposing (SelectionSet)
 import Json.Decode as Decode
+import ScalarCodecs
 
 
 type alias LinkRequiredArguments =
-    { id : Bagheera.ScalarCodecs.LinkId }
+    { id : ScalarCodecs.LinkId }
 
 
 {-| Get details about a link
@@ -28,7 +28,7 @@ link :
     -> SelectionSet decodesTo Bagheera.Object.Link
     -> SelectionSet (Maybe decodesTo) RootQuery
 link requiredArgs____ object____ =
-    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "link" [ Argument.required "id" requiredArgs____.id (ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecLinkId) ] object____ (Basics.identity >> Decode.nullable)
 
 
 type alias LinksOptionalArguments =
@@ -58,7 +58,7 @@ links fillInOptionals____ object____ =
 
 
 type alias NodeRequiredArguments =
-    { id : Bagheera.ScalarCodecs.Id }
+    { id : ScalarCodecs.Id }
 
 
 {-| Fetches an object given an ID
@@ -71,4 +71,4 @@ node :
     -> SelectionSet decodesTo Bagheera.Interface.Node
     -> SelectionSet (Maybe decodesTo) RootQuery
 node requiredArgs____ object____ =
-    Object.selectionForCompositeField "node" [ Argument.required "id" requiredArgs____.id (Bagheera.ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)
+    Object.selectionForCompositeField "node" [ Argument.required "id" requiredArgs____.id (ScalarCodecs.codecs |> Bagheera.Scalar.unwrapEncoder .codecId) ] object____ (Basics.identity >> Decode.nullable)
