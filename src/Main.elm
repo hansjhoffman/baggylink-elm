@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Bagheera.Object exposing (Link, LinkConnection, PageInfo)
 import Bagheera.Object.Link as Link
@@ -124,6 +124,7 @@ type Msg
     | GotLinksResponse (GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
       -- User actions
     | SortLinks SortOptions
+    | OpenExternalLink String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -141,6 +142,9 @@ update msg model =
 
                 ByVisits ->
                     ( model, Cmd.none )
+
+        OpenExternalLink externalLink ->
+            ( model, openExternalLink externalLink )
 
         NoOp ->
             ( model, Cmd.none )
@@ -169,7 +173,7 @@ viewLinkCard link =
             ]
         , div [ Attr.class "tw-flex tw-space-x-3 tw-justify-end" ]
             [ button [ Events.onClick NoOp ] [ text "Edit" ]
-            , button [ Events.onClick NoOp ] [ text "View" ]
+            , button [ Events.onClick (OpenExternalLink link.url) ] [ text "View" ]
             , button [ Events.onClick NoOp ] [ text "Delete" ]
             ]
         ]
@@ -262,6 +266,13 @@ view model =
             ]
         ]
     }
+
+
+
+-- PORTS
+
+
+port openExternalLink : String -> Cmd msg
 
 
 
