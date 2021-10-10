@@ -1,14 +1,43 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+// https://www.youtube.com/watch?v=MAtaT8BZEAo
+const withOpacity =
+  (variableName) =>
+  ({ opacityValue }) => {
+    if (opacityValue !== undefined) {
+      return `rgba(var(${variableName}), ${opacityValue})`;
+    } else {
+      return `rgb(${variableName})`;
+    }
+  };
+
 module.exports = {
   mode: "jit",
   prefix: "tw-",
   purge: ["index.html", "./src/**/*.{elm,js,ts}"],
-  darkMode: true,
   theme: {
     extend: {
+      backgroundColor: {
+        skin: {
+          "african-violet": withOpacity("--color-african-violet"),
+          "hot-pink": withOpacity("--color-hot-pink"),
+          "maximum-blue": withOpacity("--color-maximum-blue"),
+          "raisin-black": withOpacity("--color-raisin-black"),
+        },
+      },
+      borderColor: {
+        mustard: withOpacity("--color-mustard"),
+      },
+      colors: {
+        mustard: withOpacity("--color-mustard"),
+      },
       dropShadow: {
-        hotPink: "#eb64b9 0px 1px 30px",
+        "hot-pink": `${withOpacity("--color-hot-pink")({ opacityValue: 1 })} 0px 1px 30px`,
+      },
+      textColor: {
+        skin: {
+          base: withOpacity("--color-text-base"),
+        },
       },
     },
     fontFamily: {

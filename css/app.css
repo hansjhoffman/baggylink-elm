@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-maximum-blue: 64, 180, 196;
+    --color-hot-pink: 235, 100, 185;
+    --color-african-violet: 179, 129, 197;
+    --color-mustard: 255, 226, 97;
+    --color-raisin-black: 39, 33, 46;
+    --color-text-base: 255, 255, 255;
+  }
+
+  .dark {
+    --color-maximum-blue: 30, 211, 236;
+    --color-hot-pink: 255, 82, 191;
+    --color-african-violet: 216, 135, 245;
+    --color-mustard: 255, 226, 97;
+    --color-raisin-black: 25, 21, 30;
+    --color-text-base: 255, 255, 255;
+  }
+}
+
 body {
-  background-color: #27212e;
+  background-color: rgb(var(--color-raisin-black));
 }

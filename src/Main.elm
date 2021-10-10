@@ -161,7 +161,7 @@ mkTestAttribute key =
 
 viewLinkCard : LinkData -> Html Msg
 viewLinkCard link =
-    div [ Attr.class "tw-bg-[#b381c5] tw-rounded-md tw-p-4 tw-grid tw-grid-cols-3 tw-text-white" ]
+    div [ Attr.class "tw-bg-skin-african-violet tw-rounded-md tw-p-4 tw-grid tw-grid-cols-3 tw-text-skin-base" ]
         [ div [ Attr.class "tw-flex tw-flex-col" ]
             [ span [] [ text ("https://localhost:4000/" ++ link.hash) ]
             , span [ Attr.class "tw-text-xs" ] [ text link.url ]
@@ -172,9 +172,21 @@ viewLinkCard link =
                 ]
             ]
         , div [ Attr.class "tw-flex tw-space-x-3 tw-justify-end" ]
-            [ button [ Events.onClick NoOp ] [ text "Edit" ]
-            , button [ Events.onClick (OpenExternalLink link.url) ] [ text "View" ]
-            , button [ Events.onClick NoOp ] [ text "Delete" ]
+            [ button
+                [ Attr.class "tw-border-none focus:tw-outline-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2"
+                , Events.onClick NoOp
+                ]
+                [ text "Edit" ]
+            , button
+                [ Attr.class "tw-border-none focus:tw-outline-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2"
+                , Events.onClick (OpenExternalLink link.url)
+                ]
+                [ text "View" ]
+            , button
+                [ Attr.class "tw-border-none focus:tw-outline-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2"
+                , Events.onClick NoOp
+                ]
+                [ text "Delete" ]
             ]
         ]
 
@@ -227,15 +239,15 @@ view model =
         [ section [ Attr.class "tw-w-1/2 tw-mx-auto tw-mt-20" ]
             [ header [ Attr.class "tw-flex tw-items-center tw-justify-between tw-mb-14" ]
                 [ div [ Attr.class "tw-flex tw-items-center" ]
-                    [ h2 [ Attr.class "tw-font-serif tw-text-white tw-prose-2xl" ]
+                    [ h2 [ Attr.class "tw-font-serif tw-text-skin-base tw-prose-2xl" ]
                         [ text "My Links" ]
                     , button
                         [ mkTestAttribute "new-link-btn"
-                        , Attr.class "tw-ml-8 tw-flex tw-items-center tw-bg-[#eb64b9] tw-px-3 tw-text-sm tw-text-white tw-rounded-md tw-border-none focus:tw-outline-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-h-9 hover:tw-drop-shadow-hotPink hover:tw-transition"
+                        , Attr.class "tw-ml-8 tw-flex tw-items-center tw-bg-skin-hot-pink tw-px-3 tw-text-sm tw-text-skin-base tw-rounded-md tw-border-none focus:tw-outline-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2 tw-h-9 focus:tw-drop-shadow-hot-pink hover:tw-drop-shadow-hot-pink hover:tw-transition"
                         , Events.onClick NoOp
                         ]
                         [ Svg.svg
-                            [ SvgAttr.class "tw-mr-2 tw-text-white"
+                            [ SvgAttr.class "tw-mr-2 tw-text-skin-base"
                             , SvgAttr.fill "currentColor"
                             , SvgAttr.height "20"
                             , SvgAttr.width "12"
@@ -255,7 +267,7 @@ view model =
                 , select
                     [ mkTestAttribute "sort-by-select"
                     , Attr.autocomplete False
-                    , Attr.class "tw-text-white tw-text-sm tw-bg-[#40b4c4] tw-rounded-md tw-border-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-cursor-pointer"
+                    , Attr.class "tw-text-skin-base tw-text-sm tw-bg-skin-maximum-blue tw-rounded-md tw-border-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2 tw-cursor-pointer"
                     , Attr.name "link-sort-options"
                     ]
                     [ option [ Events.onClick (SortLinks ByCreatedAt) ] [ text "Created" ]
