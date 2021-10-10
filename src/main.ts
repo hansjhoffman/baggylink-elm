@@ -6,14 +6,17 @@ import "/css/app.css";
 
 const app = Elm.Main.init({
   node: document.getElementById("app"),
+  flags: null,
 });
 
 const openExternalLink =
-  (link: string): IO.IO<void> =>
+  (url: string): IO.IO<void> =>
   () => {
-    return window.open(link, "_blank")?.focus();
+    return window.open(url, "_blank")?.focus();
   };
 
-app.ports.openExternalLink.subscribe((externalLink: string) => {
-  return openExternalLink(externalLink)();
+app.ports.interopFromElm.subscribe((fromElm) => {
+  return match(fromElm)
+    .with({ tag: "openExternalLink" }, ({ url }) => openExternalLink(url)())
+    .exhaustive();
 });

@@ -17,7 +17,7 @@ interop =
 
 
 type FromElm
-    = Alert String
+    = OpenExternalLink String
 
 
 type alias ToElm =
@@ -31,13 +31,13 @@ type alias Flags =
 fromElm : Encoder FromElm
 fromElm =
     TsEncode.union
-        (\vAlert value ->
+        (\vExternalLink value ->
             case value of
-                Alert string ->
-                    vAlert string
+                OpenExternalLink string ->
+                    vExternalLink string
         )
-        |> TsEncode.variantTagged "alert"
-            (TsEncode.object [ required "message" identity TsEncode.string ])
+        |> TsEncode.variantTagged "openExternalLink"
+            (TsEncode.object [ required "url" identity TsEncode.string ])
         |> TsEncode.buildUnion
 
 
