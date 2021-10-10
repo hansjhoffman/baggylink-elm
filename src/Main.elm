@@ -138,10 +138,10 @@ update msg model =
         SortLinks sortOption ->
             case sortOption of
                 ByCreatedAt ->
-                    ( model, Cmd.none )
+                    ( { model | sortOption = ByCreatedAt }, Cmd.none )
 
                 ByVisits ->
-                    ( model, Cmd.none )
+                    ( { model | sortOption = ByVisits }, Cmd.none )
 
         OpenExternalLink externalLink ->
             ( model, openExternalLink externalLink )
@@ -264,14 +264,24 @@ view model =
                         , text "New"
                         ]
                     ]
+                , label [ Attr.class "tw-hidden", Attr.for "sort-by-select" ] []
                 , select
                     [ mkTestAttribute "sort-by-select"
                     , Attr.autocomplete False
                     , Attr.class "tw-text-skin-base tw-text-sm tw-bg-skin-maximum-blue tw-rounded-md tw-border-none focus:tw-border-skin-mustard focus:tw-ring-mustard focus:tw-ring-2 tw-cursor-pointer"
+                    , Attr.id "sort-by-select"
                     , Attr.name "link-sort-options"
                     ]
-                    [ option [ Events.onClick (SortLinks ByCreatedAt) ] [ text "Created" ]
-                    , option [ Events.onClick (SortLinks ByVisits) ] [ text "Visits" ]
+                    [ option
+                        [ Attr.value "createdAt"
+                        , Events.onClick (SortLinks ByCreatedAt)
+                        ]
+                        [ text "Created" ]
+                    , option
+                        [ Attr.value "visits"
+                        , Events.onClick (SortLinks ByVisits)
+                        ]
+                        [ text "Visits" ]
                     ]
                 ]
             , viewLinks model
