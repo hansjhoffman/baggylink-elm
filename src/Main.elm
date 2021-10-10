@@ -120,7 +120,9 @@ subscriptions _ =
 
 type Msg
     = NoOp
+      -- HTTP responses
     | GotLinksResponse (GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
+      -- User actions
     | SortLinks SortOptions
 
 
@@ -155,7 +157,7 @@ mkTestAttribute key =
 
 viewLinkCard : LinkData -> Html Msg
 viewLinkCard link =
-    div [ Attr.class "tw-bg-red-300 tw-rounded-md tw-p-4" ]
+    div [ Attr.class "tw-bg-[#b381c5] tw-rounded-md tw-p-4" ]
         [ text ("https://localhost:4000/" ++ link.hash)
         , span [] [ text "hits:" ]
         , span [] [ text (String.fromInt <| Maybe.withDefault 0 link.visits) ]
@@ -214,21 +216,21 @@ view model =
     , body =
         [ section [ Attr.class "tw-w-1/2 tw-mx-auto tw-mt-20" ]
             [ header [ Attr.class "tw-flex tw-items-center tw-justify-between tw-mb-14" ]
-                [ div [ Attr.class "tw-flex" ]
-                    [ h2 [ Attr.class "tw-font-sans tw-font-semibold tw-prose tw-prose-2xl" ]
+                [ div [ Attr.class "tw-flex tw-items-center" ]
+                    [ h2 [ Attr.class "tw-font-serif tw-text-white tw-prose-2xl" ]
                         [ text "My Links" ]
                     , button
                         [ mkTestAttribute "new-link-btn"
-                        , Attr.class "tw-group tw-flex tw-items-center tw-text-sm tw-font-medium tw-px-4 tw-py-2"
+                        , Attr.class "tw-ml-8 tw-flex tw-items-center tw-bg-[#eb64b9] tw-px-3 tw-text-sm tw-text-white tw-rounded-md tw-border-none focus:tw-outline-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2 tw-h-9"
                         , Events.onClick NoOp
                         ]
                         [ Svg.svg
-                            [ SvgAttr.class "tw-mr-2 tw-text-blue-500"
+                            [ SvgAttr.class "tw-mr-2 tw-text-white"
                             , SvgAttr.fill "currentColor"
                             , SvgAttr.height "20"
                             , SvgAttr.width "12"
                             , SvgAttr.version "1.1"
-                            , SvgAttr.viewBox "0 0 12 22"
+                            , SvgAttr.viewBox "0 0 12 20"
                             ]
                             [ Svg.path
                                 [ SvgAttr.clipRule "evenodd"
@@ -243,7 +245,7 @@ view model =
                 , select
                     [ mkTestAttribute "sort-by-select"
                     , Attr.autocomplete False
-                    , Attr.class "tw-border-none"
+                    , Attr.class "tw-text-white tw-text-sm tw-bg-[#40b4c4] tw-rounded-md tw-border-none focus:tw-border-[#ffe261] focus:tw-ring-[#ffe261] focus:tw-ring-2"
                     , Attr.name "link-sort-options"
                     ]
                     [ option [ Events.onClick (SortLinks ByCreatedAt) ] [ text "Created" ]

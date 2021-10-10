@@ -8,10 +8,10 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      // https://fontjoy.com/
+      // https://www.youtube.com/watch?v=sOnBG2wUm1s
       mono: ["DM Mono", ...defaultTheme.fontFamily.mono],
-      sans: ["Fira Sans", ...defaultTheme.fontFamily.sans],
-      serif: ["Merriweather", ...defaultTheme.fontFamily.serif],
+      sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+      serif: ["Lora", ...defaultTheme.fontFamily.serif],
     },
   },
   variants: {
