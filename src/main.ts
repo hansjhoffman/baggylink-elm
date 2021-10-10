@@ -1,6 +1,4 @@
 import * as IO from "fp-ts/IO";
-import * as O from "fp-ts/Option";
-import { pipe } from "fp-ts/function";
 import { match } from "ts-pattern";
 
 import { Elm } from "/src/Main.elm";
@@ -11,12 +9,9 @@ const app = Elm.Main.init({
 });
 
 const openExternalLink =
-  (link: string): IO.IO<O.Option<void>> =>
+  (link: string): IO.IO<void> =>
   () => {
-    return pipe(
-      O.fromNullable(window),
-      O.map((w) => w.open(link, "_blank")?.focus()),
-    );
+    return window.open(link, "_blank")?.focus();
   };
 
 app.ports.openExternalLink.subscribe((externalLink: string) => {
