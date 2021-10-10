@@ -2,7 +2,8 @@
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
+    "allowUmdGlobalAccess": true,
+    "baseUrl": ".",
     "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -15,9 +16,11 @@
     "resolveJsonModule": true,
     "skipLibCheck": false,
     "strict": true,
+    "strictNullChecks": true,
     "target": "ESNext",
     "useDefineForClassFields": true
   },
-  "include": ["src"],
-  "exclude": []
+  "include": ["src/**/*"],
+  "exclude": [],
+  "types": ["vite/client"]
 }

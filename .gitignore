@@ -13,3 +13,7 @@ dist
 .DS_Store
 .env*
 .nix-*
+
+# logs
+yarn-*.log
+npm-*.log
