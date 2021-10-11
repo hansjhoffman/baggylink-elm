@@ -4,3 +4,4 @@ node_modules
 /review
 /tests
 vite.config.ts
+src/Main.elm.d.ts
