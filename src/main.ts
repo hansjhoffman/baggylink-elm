@@ -1,7 +1,7 @@
 import * as IO from "fp-ts/IO";
 import { match } from "ts-pattern";
 
-import { Elm } from "/src/Main.elm";
+import { Elm } from "./Main.elm";
 import "/css/app.css";
 
 const app = Elm.Main.init({
@@ -17,6 +17,6 @@ const openExternalLink =
 
 app.ports.interopFromElm.subscribe((fromElm) => {
   return match(fromElm)
-    .with({ tag: "openExternalLink" }, ({ url }) => openExternalLink(url)())
+    .with({ tag: "openExternalLink" }, ({ data }) => openExternalLink(data.url)())
     .exhaustive();
 });
