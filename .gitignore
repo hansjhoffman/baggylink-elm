@@ -17,3 +17,6 @@ dist
 # logs
 yarn-*.log
 npm-*.log
+
+# Ensure we never have stale type declarations for our ports
+src/Main.elm.d.ts

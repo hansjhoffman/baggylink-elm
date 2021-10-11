@@ -31,6 +31,7 @@ jobs:
         run: |
           nix-shell --pure --run "elm make --output=/dev/null src/Main.elm"
           nix-shell --pure --run "cd review && elm make src/ReviewConfig.elm"
+          nix-shell --pure --run "make elm-ports && make compile-ts"
 
       - name: Format
         run: |

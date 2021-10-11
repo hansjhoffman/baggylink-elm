@@ -95,8 +95,12 @@ lint-ts-fix: ## Lint fix all typescript files
 test: ## Test elm code
 	elm-test
 
-# GraphQL targets
+# Other targets
 # -------------------
+
+.PHONY: elm-ports
+elm-ports: ## Generate type declaration file for typescript interop
+	yarn elm-ts-interop -o src/Main.elm.d.ts
 
 .PHONY: schema
 schema: ## Fetch latest GraphQL schema
