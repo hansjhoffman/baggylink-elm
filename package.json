@@ -1,37 +1,61 @@
 {
   "name": "baggylink",
+  "description": "UI for Bagheera url shortener",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.ts",
   "license": "MIT",
   "engines": {
-    "node": ">=12.17.0"
+    "node": ">=12.22.0"
   },
   "scripts": {
     "build": "make build",
     "format": "make format",
+    "format:elm": "make format-elm",
+    "format:ts": "make format-ts",
     "lint": "make lint",
-    "lint:fix": "make lint-fix",
+    "lint:elm": "make lint-elm",
+    "lint:ts": "make lint-ts",
+    "lint:elm:fix": "make lint-elm-fix",
+    "lint:ts:fix": "make lint-ts-fix",
     "prepare": "is-ci || husky install",
     "preview": "make preview",
     "schema": "make schema",
-    "start": "make run"
+    "start": "make run",
+    "test": "make test"
   },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.2",
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.7",
+    "elm-ts-interop": "^0.0.4",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.2",
     "is-ci": "^3.0.0",
-    "lint-staged": "^11.2.0",
+    "lint-staged": "^11.2.3",
     "postcss": "^8.3.9",
+    "prettier": "^2.4.1",
     "tailwindcss": "^2.2.16",
-    "vite": "^2.6.3",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.7",
     "vite-plugin-elm": "^2.5.0"
+  },
+  "dependencies": {
+    "fp-ts": "^2.11.4",
+    "ts-pattern": "^3.3.3"
   },
   "lint-staged": {
     "**/*.elm": [
+      "elm-review",
       "elm-format --yes"
+    ],
+    "**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }

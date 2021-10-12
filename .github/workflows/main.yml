@@ -39,5 +39,10 @@ jobs:
       - name: Lint
         run: nix-shell --run "make lint"
 
+      - name: Validate Ports
+        run: |
+          nix-shell --pure --run "make elm-ports"
+          nix-shell --pure --run "make compile-ts"
+
       - name: Test
         run: nix-shell --run "make test"

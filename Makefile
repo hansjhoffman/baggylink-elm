@@ -38,8 +38,12 @@ targets:
 clean: ## Remove build artifacts
 	rm -rf dist
 
+.PHONE: compile-ts
+compile-ts: ## Run Typscript compiler
+	yarn tsc
+
 .PHONY: build
-build: ## Make a production build
+build: compile-ts ## Make a production build
 	yarn vite build
 
 .PHONY: deps
@@ -58,24 +62,46 @@ run: ## Run web app
 # ------------------------------------
 
 .PHONY: format
-format: format-elm ## Format everything
+format: format-elm format-ts ## Format everything
 
 .PHONY: format-elm
 format-elm: ## Format elm files
-	elm-format src/ --yes
+	elm-format src/ review/ tests/ --yes
+
+.PHONY: format-ts
+format-ts: ## Format typescript files
+	yarn prettier --write '**/*.ts'
 
 .PHONY: lint
-lint: ## Lint elm files
-	elm-review
+lint: lint-elm lint-ts ## Lint elm & typescript files
 
 .PHONY: lint-elm
-lint-fix: ## Lint fix all elm files
+lint-elm: ## Lint elm files
+	elm-review
+
+.PHONY: lint-ts
+lint-ts: ## Lint ts files
+	yarn eslint '**/*.ts'
+
+.PHONY: lint-elm-fix
+lint-elm-fix: ## Lint fix all elm files
 	elm-review --fix-all
 
-.PHONY: schema
-schema: ## Fetch latest GraphQL schema
-	yarn elm-graphql http://localhost:4000/graphql --base Bagheera --scalar-codecs ScalarCodecs
+.PHONY: lint-ts-fix
+lint-ts-fix: ## Lint fix all typescript files
+	yarn eslint '**/*.ts' --fix
 
 .PHONY: test
 test: ## Test elm code
 	elm-test
+
+# Other targets
+# -------------------
+
+.PHONY: elm-ports
+elm-ports: ## Generate type declaration file for typescript interop
+	yarn elm-ts-interop -o src/Main.elm.d.ts
+
+.PHONY: schema
+schema: ## Fetch latest GraphQL schema
+	yarn elm-graphql http://localhost:4000/graphql --base Bagheera --scalar-codecs ScalarCodecs
