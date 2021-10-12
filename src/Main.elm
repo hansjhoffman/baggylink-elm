@@ -100,9 +100,9 @@ type SortOptions
 
 init : Decode.Value -> ( Model, Cmd Msg )
 init flags =
-    case flags |> InteropPorts.decodeFlags of
-        Err error ->
-            Debug.todo <| Debug.toString error
+    case InteropPorts.decodeFlags flags of
+        Err flagsError ->
+            Debug.todo <| Debug.toString flagsError
 
         Ok _ ->
             ( { links = Loading
@@ -118,12 +118,13 @@ init flags =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    case InteropPorts.toElm of
-        Err _ ->
-            Sub.none
-
-        Ok _ ->
-            Sub.none
+    InteropPorts.toElm
+        |> Sub.map
+            (\toElm ->
+                case toElm of
+                    _ ->
+                        NoOp
+            )
 
 
 
