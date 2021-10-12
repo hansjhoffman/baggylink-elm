@@ -1,4 +1,4 @@
-module InteropDefinitions exposing (Flags, FromElm, ToElm, interop)
+module InteropDefinitions exposing (Flags, FromElm(..), ToElm, interop)
 
 {-| This is the file home for all ports. Be sure to re-generate the TypeScript
 declaration file `src/Main.elm.d.ts` and `src/InteropPorts.elm` for development

@@ -16,6 +16,7 @@ import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Html exposing (..)
 import Html.Attributes as Attr
 import Html.Events as Events
+import InteropDefinitions
 import InteropPorts
 import Json.Decode as Decode
 import RemoteData as RD exposing (RemoteData(..))
@@ -157,7 +158,11 @@ update msg model =
                     ( { model | sortOption = ByVisits }, Cmd.none )
 
         OpenExternalLink externalLink ->
-            ( model, InteropPorts.fromElm { url = externalLink } )
+            ( model
+            , externalLink
+                |> InteropDefinitions.OpenExternalLink
+                |> InteropPorts.fromElm
+            )
 
         NoOp ->
             ( model, Cmd.none )
