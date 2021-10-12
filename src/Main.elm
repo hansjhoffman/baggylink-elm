@@ -1,4 +1,4 @@
-port module Main exposing (..)
+module Main exposing (..)
 
 import Bagheera.Object exposing (Link, LinkConnection, PageInfo)
 import Bagheera.Object.Link as Link
@@ -16,6 +16,8 @@ import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Html exposing (..)
 import Html.Attributes as Attr
 import Html.Events as Events
+import InteropPorts
+import Json.Decode as Decode
 import RemoteData as RD exposing (RemoteData(..))
 import Svg
 import Svg.Attributes as SvgAttr
@@ -96,13 +98,18 @@ type SortOptions
     | ByVisits
 
 
-init : Flags -> ( Model, Cmd Msg )
-init _ =
-    ( { links = Loading
-      , sortOption = ByCreatedAt
-      }
-    , makeRequest |> Task.attempt (RD.fromResult >> GotLinksResponse)
-    )
+init : Decode.Value -> ( Model, Cmd Msg )
+init flags =
+    case flags |> InteropPorts.decodeFlags of
+        Err error ->
+            Debug.todo <| Debug.toString error
+
+        Ok _ ->
+            ( { links = Loading
+              , sortOption = ByCreatedAt
+              }
+            , makeRequest |> Task.attempt (RD.fromResult >> GotLinksResponse)
+            )
 
 
 
@@ -111,7 +118,12 @@ init _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.none
+    case InteropPorts.toElm of
+        Err _ ->
+            Sub.none
+
+        Ok _ ->
+            Sub.none
 
 
 
@@ -144,7 +156,7 @@ update msg model =
                     ( { model | sortOption = ByVisits }, Cmd.none )
 
         OpenExternalLink externalLink ->
-            ( model, openExternalLink externalLink )
+            ( model, InteropPorts.fromElm { url = externalLink } )
 
         NoOp ->
             ( model, Cmd.none )
@@ -291,21 +303,10 @@ view model =
 
 
 
--- PORTS
-
-
-port openExternalLink : String -> Cmd msg
-
-
-
 -- MAIN
 
 
-type alias Flags =
-    ()
-
-
-main : Program Flags Model Msg
+main : Program Decode.Value Model Msg
 main =
     Browser.document
         { init = init

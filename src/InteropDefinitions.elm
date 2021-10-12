@@ -1,7 +1,12 @@
 module InteropDefinitions exposing (Flags, FromElm, ToElm, interop)
 
+{-| This is the file home for all ports. Be sure to re-generate the TypeScript
+declaration file `src/Main.elm.d.ts` and `src/InteropPorts.elm` for development
+when changes are made to this file.
+-}
+
 import TsJson.Decode as TsDecode exposing (Decoder)
-import TsJson.Encode as TsEncode exposing (Encoder, optional, required)
+import TsJson.Encode as TsEncode exposing (Encoder)
 
 
 interop :
@@ -37,7 +42,7 @@ fromElm =
                     vExternalLink string
         )
         |> TsEncode.variantTagged "openExternalLink"
-            (TsEncode.object [ required "url" identity TsEncode.string ])
+            (TsEncode.object [ TsEncode.required "url" identity TsEncode.string ])
         |> TsEncode.buildUnion
 
 
