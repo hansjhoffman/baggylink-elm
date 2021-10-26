@@ -31,9 +31,9 @@ type alias Cursor =
 {-| elm-graphql gives us the ability to "possibly recovered data",
 but we don't care, so we use a Unit type as a parameter to Error.
 -}
-type alias GqlResponse a =
+type alias Response a =
     RemoteData (Graphql.Http.Error ()) a
 
 
-type alias GqlTask t =
+type alias Task t =
     T.Task (Graphql.Http.Error ()) t

@@ -50,7 +50,6 @@
   },
   "lint-staged": {
     "**/*.elm": [
-      "elm-review",
       "elm-format --yes"
     ],
     "**/*.ts": [

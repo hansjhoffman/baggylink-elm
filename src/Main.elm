@@ -8,7 +8,7 @@ import Bagheera.Object.PageInfo as PageInfo
 import Bagheera.Query as Query
 import Bagheera.Scalar exposing (LinkId(..))
 import Browser
-import Gql exposing (..)
+import Gql
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
@@ -25,7 +25,7 @@ import Svg.Attributes as SvgAttr
 import Task
 
 
-linksQuery : Cursor -> SelectionSet (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
+linksQuery : Gql.Cursor -> SelectionSet (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
 linksQuery cursor =
     Query.links
         (\optionals ->
@@ -37,9 +37,9 @@ linksQuery cursor =
         linksSelection
 
 
-linksSelection : SelectionSet (Paginated (Maybe (List (Maybe (Maybe LinkData))))) LinkConnection
+linksSelection : SelectionSet (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData))))) LinkConnection
 linksSelection =
-    SelectionSet.succeed Paginated
+    SelectionSet.succeed Gql.Paginated
         |> SelectionSet.with linksEdgesSelection
         |> SelectionSet.with (LinkConnection.pageInfo linksPageInfoSelection)
 
@@ -58,19 +58,19 @@ linksNodeSelection =
         Link.visits
 
 
-linksPageInfoSelection : SelectionSet CurrentPageInfo PageInfo
+linksPageInfoSelection : SelectionSet Gql.CurrentPageInfo PageInfo
 linksPageInfoSelection =
-    SelectionSet.succeed CurrentPageInfo
+    SelectionSet.succeed Gql.CurrentPageInfo
         |> SelectionSet.with PageInfo.endCursor
         |> SelectionSet.with PageInfo.hasNextPage
         |> SelectionSet.with PageInfo.hasPreviousPage
         |> SelectionSet.with PageInfo.startCursor
 
 
-makeRequest : GqlTask (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData))))))
+makeRequest : Gql.Task (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData))))))
 makeRequest =
     linksQuery Nothing
-        |> Graphql.Http.queryRequest endpoint
+        |> Graphql.Http.queryRequest Gql.endpoint
         |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
         |> Graphql.Http.toTask
         |> Task.mapError (Graphql.Http.mapError <| always ())
@@ -81,7 +81,7 @@ makeRequest =
 
 
 type alias Model =
-    { links : GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData))))))
+    { links : Gql.Response (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData))))))
     , sortOption : SortOptions
     }
 
@@ -135,7 +135,7 @@ subscriptions _ =
 type Msg
     = NoOp
       -- HTTP responses
-    | GotLinksResponse (GqlResponse (Maybe (Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
+    | GotLinksResponse (Gql.Response (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
       -- User actions
     | SortLinks SortOptions
     | OpenExternalLink String
