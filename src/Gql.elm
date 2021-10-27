@@ -5,9 +5,9 @@ import RemoteData exposing (RemoteData)
 import Task as T
 
 
-endpoint : String
-endpoint =
-    "http://localhost:4000/graphql"
+type alias Env =
+    { endpoint : String
+    }
 
 
 type alias Paginated a =
