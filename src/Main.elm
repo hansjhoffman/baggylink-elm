@@ -25,7 +25,9 @@ import Svg.Attributes as SvgAttr
 import Task
 
 
-linksQuery : Gql.Cursor -> SelectionSet (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
+linksQuery :
+    Gql.Cursor
+    -> SelectionSet (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData)))))) RootQuery
 linksQuery cursor =
     Query.links
         (\optionals ->
@@ -109,7 +111,8 @@ init flags =
             ( { links = Loading
               , sortOption = ByCreatedAt
               }
-            , makeRequest |> Task.attempt (RD.fromResult >> GotLinksResponse)
+            , makeRequest
+                |> Task.attempt (RD.fromResult >> GotLinksResponse)
             )
 
 
@@ -123,7 +126,10 @@ subscriptions _ =
         |> Sub.map
             (\toElm ->
                 case toElm of
-                    _ ->
+                    Err _ ->
+                        NoOp
+
+                    Ok _ ->
                         NoOp
             )
 
@@ -152,10 +158,14 @@ update msg model =
         SortLinks sortOption ->
             case sortOption of
                 ByCreatedAt ->
-                    ( { model | sortOption = ByCreatedAt }, Cmd.none )
+                    ( { model | sortOption = ByCreatedAt }
+                    , Cmd.none
+                    )
 
                 ByVisits ->
-                    ( { model | sortOption = ByVisits }, Cmd.none )
+                    ( { model | sortOption = ByVisits }
+                    , Cmd.none
+                    )
 
         OpenExternalLink externalLink ->
             ( model
