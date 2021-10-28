@@ -19,6 +19,7 @@ import Html.Events as Events
 import InteropDefinitions
 import InteropPorts
 import Json.Decode as Decode
+import Reader exposing (Reader)
 import RemoteData as RD exposing (RemoteData(..))
 import Svg
 import Svg.Attributes as SvgAttr
@@ -69,13 +70,16 @@ linksPageInfoSelection =
         |> SelectionSet.with PageInfo.startCursor
 
 
-makeRequest : Gql.Task (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData))))))
+makeRequest : Reader Gql.Env (Gql.Task (Maybe (Gql.Paginated (Maybe (List (Maybe (Maybe LinkData)))))))
 makeRequest =
-    linksQuery Nothing
-        |> Graphql.Http.queryRequest Gql.endpoint
-        |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
-        |> Graphql.Http.toTask
-        |> Task.mapError (Graphql.Http.mapError <| always ())
+    Reader.Reader
+        (\env ->
+            linksQuery Nothing
+                |> Graphql.Http.queryRequest env.endpoint
+                |> Graphql.Http.withHeader "Authorization" "Bearer abcdefgh12345678"
+                |> Graphql.Http.toTask
+                |> Task.mapError (Graphql.Http.mapError <| always ())
+        )
 
 
 
@@ -103,6 +107,12 @@ type SortOptions
 
 init : Decode.Value -> ( Model, Cmd Msg )
 init flags =
+    let
+        env : Gql.Env
+        env =
+            { endpoint = "http://localhost:4000/graphql"
+            }
+    in
     case InteropPorts.decodeFlags flags of
         Err flagsError ->
             Debug.todo <| Debug.toString flagsError
@@ -111,7 +121,7 @@ init flags =
             ( { links = Loading
               , sortOption = ByCreatedAt
               }
-            , makeRequest
+            , Reader.run makeRequest env
                 |> Task.attempt (RD.fromResult >> GotLinksResponse)
             )
 
