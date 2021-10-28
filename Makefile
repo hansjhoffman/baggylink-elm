@@ -31,20 +31,23 @@ targets:
 	@echo "\033[34m---------------------------------------------------------------\033[0m"
 	@perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
 
-# Development targets
+# Build targets
 # -------------------
 
 .PHONY: clean
 clean: ## Remove build artifacts
 	rm -rf dist
 
+.PHONY: build
+build: compile-ts ## Make a production build
+	yarn vite build
+
 .PHONE: compile-ts
 compile-ts: ## Run Typscript compiler
 	yarn tsc
 
-.PHONY: build
-build: compile-ts ## Make a production build
-	yarn vite build
+# Development targets
+# -------------------
 
 .PHONY: deps
 deps: ## Install all dependencies
