@@ -12,9 +12,8 @@ const withOpacity =
   };
 
 module.exports = {
-  mode: "jit",
   prefix: "tw-",
-  purge: ["index.html", "./src/**/*.{elm,js,ts}"],
+  content: ["index.html", "./src/**/*.{elm,js,ts}"],
   theme: {
     extend: {
       backgroundColor: {
