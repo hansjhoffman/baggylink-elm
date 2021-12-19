@@ -27,3 +27,4 @@ config =
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
     ]
+        |> List.map (Review.Rule.ignoreErrorsForDirectories [ "Bagheera/" ])
