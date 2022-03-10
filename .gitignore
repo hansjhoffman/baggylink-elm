@@ -20,3 +20,6 @@ npm-*.log
 
 # Ensure we never have stale type declarations for our ports
 src/Main.elm.d.ts
+
+# env
+.envrc
