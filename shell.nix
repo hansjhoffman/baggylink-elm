@@ -9,7 +9,7 @@ let
     pkgs.elmPackages.elm-review
     pkgs.elmPackages.elm-test
     pkgs.nixfmt
-    pkgs.nodejs
+    pkgs.nodejs-16_x
     pkgs.yarn
   ];
 
